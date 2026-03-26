@@ -105,26 +105,20 @@ function App() {
   const chauffeurCards = t('chauffeur.cards', { returnObjects: true }) as InfoCard[]
   const chauffeurBullets = t('chauffeur.bullets', { returnObjects: true }) as string[]
 
-  const heroCards = useMemo(
-    () => [
-      {
-        title: t('hero.stats.role'),
-        desc: t('hero.stats.roleValue'),
-        icon: <BriefcaseBusiness className="h-5 w-5" />,
-      },
-      {
-        title: t('hero.stats.style'),
-        desc: t('hero.stats.styleValue'),
-        icon: <Bot className="h-5 w-5" />,
-      },
-      {
-        title: t('hero.stats.focus'),
-        desc: t('hero.stats.focusValue'),
-        icon: <Blocks className="h-5 w-5" />,
-      },
-    ],
-    [t],
-  )
+  const heroCards = useMemo(() => {
+    const insights = t('hero.insights', { returnObjects: true }) as InfoCard[]
+    const icons = [
+      <Blocks className="h-5 w-5" key="flow" />,
+      <UserRound className="h-5 w-5" key="roles" />,
+      <Bot className="h-5 w-5" key="ai" />,
+      <ArrowDownRight className="h-5 w-5" key="growth" />,
+    ]
+
+    return insights.map((item, index) => ({
+      ...item,
+      icon: icons[index] ?? <BriefcaseBusiness className="h-5 w-5" />,
+    }))
+  }, [t])
 
   const aiIcons = [
     <Bot className="h-5 w-5" key="brain" />,
@@ -279,7 +273,7 @@ function App() {
               </motion.div>
             </div>
 
-            <div className="grid auto-rows-fr gap-3 self-stretch print:hidden">
+            <div className="grid gap-3 self-start print:hidden">
               {heroCards.map((item, index) => (
                 <motion.div
                   key={item.title}
@@ -637,12 +631,12 @@ function WeChatIcon({ className = '' }: { className?: string }) {
 
 function HeroStatCard({ icon, title, value }: { icon: React.ReactNode; title: string; value: string }) {
   return (
-    <div className="flex h-full flex-col justify-between rounded-[1.45rem] border border-[color:var(--line)] bg-[color:var(--surface)]/88 p-5 backdrop-blur-sm transition-all duration-100 ease-out hover:border-[color:var(--line-strong)] hover:bg-[color:var(--surface)] hover:shadow-[0_18px_36px_rgba(18,19,18,0.08)] dark:hover:shadow-[0_18px_36px_rgba(0,0,0,0.22)]">
+    <div className="flex flex-col rounded-[1.45rem] border border-[color:var(--line)] bg-[color:var(--surface)]/88 p-5 backdrop-blur-sm transition-all duration-100 ease-out hover:border-[color:var(--line-strong)] hover:bg-[color:var(--surface)] hover:shadow-[0_18px_36px_rgba(18,19,18,0.08)] dark:hover:shadow-[0_18px_36px_rgba(0,0,0,0.22)]">
       <div className="flex items-center gap-3 text-[var(--accent)]">
         {icon}
         <span className="text-[12px] font-semibold tracking-[0.14em] text-[var(--accent)] uppercase">{title}</span>
       </div>
-      <p className="mt-5 text-[1.15rem] leading-7 text-[var(--text)]">{value}</p>
+      <p className="mt-6 text-[1.15rem] leading-7 text-[var(--text)]">{value}</p>
     </div>
   )
 }
