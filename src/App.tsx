@@ -636,7 +636,7 @@ function HeroStatCard({ icon, title, value }: { icon: React.ReactNode; title: st
         {icon}
         <span className="text-[12px] font-semibold tracking-[0.14em] text-[var(--accent)] uppercase">{title}</span>
       </div>
-      <p className="mt-6 text-[1.15rem] leading-7 text-[var(--text)]">{value}</p>
+      <p className="mt-6 text-[1rem] leading-8 text-[var(--text)] md:text-[1.02rem]">{value}</p>
     </div>
   )
 }
