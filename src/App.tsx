@@ -631,12 +631,12 @@ function WeChatIcon({ className = '' }: { className?: string }) {
 
 function HeroStatCard({ icon, title, value }: { icon: React.ReactNode; title: string; value: string }) {
   return (
-    <div className="flex flex-col rounded-[1.45rem] border border-[color:var(--line)] bg-[color:var(--surface)]/88 p-5 backdrop-blur-sm transition-all duration-100 ease-out hover:border-[color:var(--line-strong)] hover:bg-[color:var(--surface)] hover:shadow-[0_18px_36px_rgba(18,19,18,0.08)] dark:hover:shadow-[0_18px_36px_rgba(0,0,0,0.22)]">
+    <div className="flex flex-col rounded-[1.35rem] border border-[color:var(--line)] bg-[color:var(--surface)]/88 p-4 backdrop-blur-sm transition-all duration-100 ease-out hover:border-[color:var(--line-strong)] hover:bg-[color:var(--surface)] hover:shadow-[0_18px_36px_rgba(18,19,18,0.08)] dark:hover:shadow-[0_18px_36px_rgba(0,0,0,0.22)]">
       <div className="flex items-center gap-3 text-[var(--accent)]">
         {icon}
-        <span className="text-[12px] font-semibold tracking-[0.14em] text-[var(--accent)] uppercase">{title}</span>
+        <span className="text-[0.98rem] font-semibold tracking-[0.02em] text-[var(--accent)]">{title}</span>
       </div>
-      <p className="mt-6 text-[1rem] leading-8 text-[var(--text)] md:text-[1.02rem]">{value}</p>
+      <p className="mt-4 text-[0.84rem] leading-6 text-[var(--muted)] md:text-[0.86rem]">{value}</p>
     </div>
   )
 }
