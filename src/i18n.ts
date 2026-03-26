@@ -45,6 +45,10 @@ const resources = {
             title: 'AI 协同工作流',
             desc: '把 AI 用在需求拆解、流程建模、问题定位和文档沉淀，而不是只把它当提示词工具。',
           },
+          {
+            title: '验证到升级',
+            desc: '从验证链路成立到精细化运营升级，再到成熟业务中的参与式迭代，强调方案落地和持续优化。',
+          },
         ],
       },
       works: {
@@ -195,6 +199,10 @@ const resources = {
           {
             title: 'AI as part of the workflow',
             desc: 'AI is used for decomposition, workflow modeling, issue isolation, and documentation instead of being treated as a prompt gimmick.',
+          },
+          {
+            title: 'Validation to upgrade',
+            desc: 'The work spans validating a funnel, refining operations, and contributing to iterative improvements inside a running business.',
           },
         ],
       },

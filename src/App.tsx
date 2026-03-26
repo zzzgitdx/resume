@@ -206,21 +206,22 @@ function App() {
               </motion.div>
             </div>
 
-            <div className="grid gap-4 self-start print:hidden">
+            <div className="grid gap-2.5 self-start print:hidden">
               {heroInsights.map((item, index) => {
                 const icon = [
                   <BriefcaseBusiness className="h-5 w-5" key="role" />,
                   <Blocks className="h-5 w-5" key="roles" />,
                   <Bot className="h-5 w-5" key="ai" />,
+                  <ArrowDownRight className="h-5 w-5" key="iteration" />,
                 ][index]
 
                 return (
                   <motion.div
                     key={item.title}
-                    initial={{ opacity: 0, x: 18 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.18 + index * 0.08, duration: 0.45 }}
-                    whileHover={{ y: -4 }}
+                    initial={{ opacity: 0, x: 28, y: 10, scale: 0.96 }}
+                    animate={{ opacity: 1, x: 0, y: 0, scale: 1 }}
+                    transition={{ delay: 0.16 + index * 0.08, duration: 0.5, ease: 'easeOut' }}
+                    whileHover={{ y: -4, scale: 1.01, transition: { duration: 0.14, ease: 'easeOut' } }}
                   >
                     <HeroInsightCard icon={icon} title={item.title} desc={item.desc} />
                   </motion.div>
@@ -230,91 +231,131 @@ function App() {
           </div>
         </motion.section>
 
-        <SectionHeader id="works" kicker={t('works.kicker')} title={t('works.title')} intro={t('works.intro')} />
-        <section className="grid gap-5 lg:grid-cols-3 print:grid-cols-1">
-          {projects.map((project, index) => (
-            <motion.article
-              key={project.key}
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.25 }}
-              transition={{ delay: index * 0.08, duration: 0.45 }}
-              className="group flex h-full flex-col rounded-[1.8rem] border border-[color:var(--line)] bg-[color:var(--surface-strong)] p-6 shadow-[var(--shadow)] transition hover:-translate-y-1 hover:border-[color:var(--line-strong)] print:break-inside-avoid print:shadow-none"
-            >
-              <div className="mb-5 flex items-start justify-between gap-4">
-                <div>
-                  <span className="inline-flex rounded-full bg-[color:var(--accent-soft)] px-3 py-1 text-xs font-semibold tracking-[0.16em] text-[var(--accent)] uppercase">
-                    {project.tag}
-                  </span>
-                  <h3 className="mt-4 text-2xl font-semibold tracking-[-0.04em]">{project.title}</h3>
-                </div>
-                <span className="text-sm text-[var(--muted)]">0{index + 1}</span>
-              </div>
-              <p className="mb-4 text-sm text-[var(--warm)]">{project.role}</p>
-              <p className="mb-5 text-sm leading-7 text-[var(--muted)]">{project.summary}</p>
-              <div className="prose prose-neutral max-w-none flex-1 text-sm leading-7 prose-headings:mb-2 prose-headings:mt-4 prose-headings:text-base prose-headings:font-semibold prose-headings:text-[var(--text)] prose-p:text-[var(--muted)] prose-li:text-[var(--muted)] dark:prose-invert">
-                <SummaryMarkdown>{project.body}</SummaryMarkdown>
-              </div>
-              <button
-                type="button"
-                onClick={() => setSelectedProject(project)}
-                className="mt-6 inline-flex items-center gap-2 self-start rounded-full border border-[color:var(--line-strong)] px-4 py-2 text-sm font-medium text-[var(--text)] transition hover:bg-[color:var(--accent-soft)] print:hidden"
-              >
-                {t('works.viewDetail')}
-                <ArrowDownRight className="h-4 w-4" />
-              </button>
-            </motion.article>
-          ))}
-        </section>
-
-        <SectionHeader id="compare" kicker={t('compare.kicker')} title={t('compare.title')} intro={t('compare.intro')} />
-        <section className="overflow-hidden rounded-[1.8rem] border border-[color:var(--line)] bg-[color:var(--surface-strong)] shadow-[var(--shadow)] print:shadow-none">
-          <div className="hidden grid-cols-[0.9fr_1fr_1fr] border-b border-[color:var(--line)] bg-[color:var(--surface)] px-6 py-4 text-[0.95rem] font-semibold text-[var(--text)] md:grid">
-            <div>{t('compare.columns.dimension')}</div>
-            <div>{t('compare.columns.v1')}</div>
-            <div>{t('compare.columns.v2')}</div>
+        <section
+          id="works"
+          className="overflow-hidden rounded-[1.8rem] border border-[color:var(--line)] bg-[color:var(--surface)] shadow-[var(--shadow)] print:rounded-none print:border print:shadow-none"
+        >
+          <div className="px-6 py-7 md:px-8">
+            <p className="text-xs font-semibold tracking-[0.24em] text-[var(--accent)] uppercase">{t('works.kicker')}</p>
+            <div className="mt-3 space-y-4">
+              <h2 className="font-serif text-[2.4rem] tracking-[-0.05em] whitespace-nowrap md:text-[3.1rem] print:text-2xl">{t('works.title')}</h2>
+              <p className="max-w-4xl text-sm leading-7 text-[var(--muted)] md:text-base print:text-xs print:leading-6">{t('works.intro')}</p>
+            </div>
           </div>
-          <div className="divide-y divide-[color:var(--line)]">
-            {comparisonRows.map((row, index) => (
-              <motion.div
-                key={row.dimension}
-                initial={{ opacity: 0, y: 18 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.25 }}
-                transition={{ delay: index * 0.04, duration: 0.35 }}
-                className="px-6 py-6 md:grid md:grid-cols-[0.9fr_1fr_1fr] md:gap-6"
-              >
-                <div className="mb-4 md:mb-0">
-                  <div className="inline-flex rounded-full bg-[color:var(--accent-soft)] px-3 py-1 text-[11px] font-semibold tracking-[0.16em] text-[var(--accent)] uppercase md:hidden">
-                    0{index + 1}
+
+          <div className="border-t border-[color:var(--line)] bg-[color:var(--surface-strong)] px-5 py-5 md:px-6 md:py-6">
+            <div className="grid gap-5 lg:grid-cols-3 print:grid-cols-1">
+              {projects.map((project, index) => (
+                <motion.article
+                  key={project.key}
+                  initial={{ opacity: 0, y: 24 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.25 }}
+                  transition={{ delay: index * 0.08, duration: 0.45 }}
+                  className="group flex h-full flex-col rounded-[1.8rem] border border-[color:var(--line)] bg-[color:var(--surface-strong)] p-6 shadow-[var(--shadow)] transition hover:-translate-y-1 hover:border-[color:var(--line-strong)] print:break-inside-avoid print:shadow-none"
+                >
+                  <div className="mb-5 flex items-start justify-between gap-4">
+                    <div>
+                      <span className="inline-flex rounded-full bg-[color:var(--accent-soft)] px-3 py-1 text-xs font-semibold tracking-[0.16em] text-[var(--accent)] uppercase">
+                        {project.tag}
+                      </span>
+                      <h3 className="mt-4 text-2xl font-semibold tracking-[-0.04em]">{project.title}</h3>
+                    </div>
+                    <span className="text-sm text-[var(--muted)]">0{index + 1}</span>
                   </div>
-                  <h3 className="mt-3 text-base font-semibold tracking-[-0.02em] text-[var(--text)] md:mt-0 md:text-[1.05rem]">{row.dimension}</h3>
-                </div>
-                <CompareColumn label={t('compare.columns.v1')} value={row.v1} />
-                <CompareColumn label={t('compare.columns.v2')} value={row.v2} emphasize />
-              </motion.div>
-            ))}
+                  <p className="mb-4 text-sm text-[var(--warm)]">{project.role}</p>
+                  <p className="mb-5 text-sm leading-7 text-[var(--muted)]">{project.summary}</p>
+                  <div className="prose prose-neutral max-w-none flex-1 text-sm leading-7 prose-headings:mb-2 prose-headings:mt-4 prose-headings:text-base prose-headings:font-semibold prose-headings:text-[var(--text)] prose-p:text-[var(--muted)] prose-li:text-[var(--muted)] dark:prose-invert">
+                    <SummaryMarkdown>{project.body}</SummaryMarkdown>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setSelectedProject(project)}
+                    className="mt-6 inline-flex items-center gap-2 self-start rounded-full border border-[color:var(--line-strong)] px-4 py-2 text-sm font-medium text-[var(--text)] transition hover:bg-[color:var(--accent-soft)] print:hidden"
+                  >
+                    {t('works.viewDetail')}
+                    <ArrowDownRight className="h-4 w-4" />
+                  </button>
+                </motion.article>
+              ))}
+            </div>
           </div>
         </section>
 
-        <SectionHeader id="ai" kicker={t('ai.kicker')} title={t('ai.title')} intro={t('ai.intro')} />
-        <section className="grid gap-5 md:grid-cols-3 print:grid-cols-3">
-          {aiCards.map((card, index) => (
-            <motion.div
-              key={card.title}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.4 }}
-              transition={{ delay: index * 0.07, duration: 0.4 }}
-              className="rounded-[1.6rem] border border-[color:var(--line)] bg-[color:var(--surface-strong)] p-6 shadow-[var(--shadow)] print:break-inside-avoid print:shadow-none"
-            >
-              <div className="mb-4 inline-flex rounded-full bg-[color:var(--accent-soft)] p-3 text-[var(--accent)]">
-                <Bot className="h-5 w-5" />
-              </div>
-              <h3 className="text-xl font-semibold tracking-[-0.04em] print:text-base">{card.title}</h3>
-              <p className="mt-3 text-sm leading-7 text-[var(--muted)] print:text-xs print:leading-6">{card.desc}</p>
-            </motion.div>
-          ))}
+        <section
+          id="compare"
+          className="overflow-hidden rounded-[1.8rem] border border-[color:var(--line)] bg-[color:var(--surface)] shadow-[var(--shadow)] print:rounded-none print:border print:shadow-none"
+        >
+          <div className="px-6 py-7 md:px-8">
+            <p className="text-xs font-semibold tracking-[0.24em] text-[var(--accent)] uppercase">{t('compare.kicker')}</p>
+            <div className="mt-3 space-y-4">
+              <h2 className="font-serif text-[2.4rem] tracking-[-0.05em] whitespace-nowrap md:text-[3.1rem] print:text-2xl">{t('compare.title')}</h2>
+              <p className="max-w-4xl text-sm leading-7 text-[var(--muted)] md:text-base print:text-xs print:leading-6">{t('compare.intro')}</p>
+            </div>
+          </div>
+
+          <div className="border-t border-[color:var(--line)] bg-[color:var(--surface-strong)]">
+            <div className="hidden grid-cols-[0.85fr_1fr_1fr] border-b border-[color:var(--line)] bg-[color:var(--surface)] px-6 py-4 text-base font-semibold text-[var(--text)] md:grid">
+              <div>{t('compare.columns.dimension')}</div>
+              <div>{t('compare.columns.v1')}</div>
+              <div>{t('compare.columns.v2')}</div>
+            </div>
+            <div className="divide-y divide-[color:var(--line)]">
+              {comparisonRows.map((row, index) => (
+                <motion.div
+                  key={row.dimension}
+                  initial={{ opacity: 0, y: 18 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.25 }}
+                  transition={{ delay: index * 0.04, duration: 0.35 }}
+                  className="px-6 py-5 md:grid md:grid-cols-[0.85fr_1fr_1fr] md:gap-5"
+                >
+                  <div className="mb-4 md:mb-0">
+                    <div className="inline-flex rounded-full bg-[color:var(--accent-soft)] px-3 py-1 text-[11px] font-semibold tracking-[0.16em] text-[var(--accent)] uppercase md:hidden">
+                      0{index + 1}
+                    </div>
+                    <h3 className="mt-3 text-[0.98rem] font-semibold tracking-[-0.01em] text-[var(--text)] md:mt-0 md:text-[1rem]">{row.dimension}</h3>
+                  </div>
+                  <CompareColumn label={t('compare.columns.v1')} value={row.v1} />
+                  <CompareColumn label={t('compare.columns.v2')} value={row.v2} emphasize />
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section
+          id="ai"
+          className="overflow-hidden rounded-[1.8rem] border border-[color:var(--line)] bg-[color:var(--surface)] shadow-[var(--shadow)] print:rounded-none print:border print:shadow-none"
+        >
+          <div className="px-6 py-7 md:px-8">
+            <p className="text-xs font-semibold tracking-[0.24em] text-[var(--accent)] uppercase">{t('ai.kicker')}</p>
+            <div className="mt-3 space-y-4">
+              <h2 className="font-serif text-[2.4rem] tracking-[-0.05em] whitespace-nowrap md:text-[3.1rem] print:text-2xl">{t('ai.title')}</h2>
+              <p className="max-w-4xl text-sm leading-7 text-[var(--muted)] md:text-base print:text-xs print:leading-6">{t('ai.intro')}</p>
+            </div>
+          </div>
+
+          <div className="border-t border-[color:var(--line)] bg-[color:var(--surface-strong)] px-5 py-5 md:px-6 md:py-6">
+            <div className="grid gap-5 md:grid-cols-3 print:grid-cols-3">
+              {aiCards.map((card, index) => (
+                <motion.div
+                  key={card.title}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.4 }}
+                  transition={{ delay: index * 0.07, duration: 0.4 }}
+                  className="rounded-[1.6rem] border border-[color:var(--line)] bg-[color:var(--surface-strong)] p-6 shadow-[var(--shadow)] print:break-inside-avoid print:shadow-none"
+                >
+                  <div className="mb-4 inline-flex rounded-full bg-[color:var(--accent-soft)] p-3 text-[var(--accent)]">
+                    <Bot className="h-5 w-5" />
+                  </div>
+                  <h3 className="text-xl font-semibold tracking-[-0.04em] print:text-base">{card.title}</h3>
+                  <p className="mt-3 text-sm leading-7 text-[var(--muted)] print:text-xs print:leading-6">{card.desc}</p>
+                </motion.div>
+              ))}
+            </div>
+          </div>
         </section>
 
         <SectionHeader id="contact" kicker={t('contact.kicker')} title={t('contact.title')} intro={t('contact.intro')} />
@@ -428,12 +469,12 @@ function HeroInsightCard({
   desc: string
 }) {
   return (
-    <div className="rounded-[1.5rem] border border-[color:var(--line)] bg-[color:var(--surface)]/88 p-5 backdrop-blur-sm">
-      <div className="flex items-center gap-3 text-[var(--accent)]">
+    <div className="rounded-[1.35rem] border border-[color:var(--line)] bg-[color:var(--surface)]/88 p-4 backdrop-blur-sm transition-all duration-100 ease-out hover:border-[color:var(--line-strong)] hover:bg-[color:var(--surface)] hover:shadow-[0_18px_36px_rgba(18,19,18,0.08)] dark:hover:shadow-[0_18px_36px_rgba(0,0,0,0.22)]">
+      <div className="flex items-center gap-3 text-[var(--accent)] transition-colors duration-100 ease-out">
         {icon}
-        <span className="text-sm font-semibold text-[var(--text)]">{title}</span>
+        <span className="text-[12px] font-semibold tracking-[0.14em] text-[var(--accent)] uppercase transition-colors duration-100 ease-out">{title}</span>
       </div>
-      <p className="mt-4 text-[0.98rem] leading-8 text-[var(--muted)]">{desc}</p>
+      <p className="mt-2.5 text-[0.94rem] leading-6 text-[var(--muted)]">{desc}</p>
     </div>
   )
 }
@@ -450,7 +491,7 @@ function CompareColumn({
   return (
     <div className={`rounded-[1.25rem] border p-4 ${emphasize ? 'border-[color:var(--line-strong)] bg-[color:var(--accent-soft)]/55' : 'border-[color:var(--line)] bg-[color:var(--surface)]'} md:border-0 md:bg-transparent md:p-0`}>
       <p className="text-[11px] font-semibold tracking-[0.18em] text-[var(--accent)] uppercase md:hidden">{label}</p>
-      <p className="mt-3 text-[0.96rem] leading-8 text-[var(--muted)] md:mt-0 md:text-[1rem]">{value}</p>
+      <p className="mt-3 text-[0.98rem] leading-7 text-[var(--muted)] md:mt-0 md:text-[1.02rem] md:leading-8">{value}</p>
     </div>
   )
 }
