@@ -1,0 +1,104 @@
+@import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  --bg: #f4efe6;
+  --surface: rgba(252, 248, 242, 0.82);
+  --surface-strong: #fffdf9;
+  --text: #181612;
+  --muted: #645d55;
+  --accent: #21362c;
+  --accent-soft: rgba(33, 54, 44, 0.08);
+  --warm: #a46845;
+  --line: rgba(24, 22, 18, 0.1);
+  --line-strong: rgba(24, 22, 18, 0.2);
+  --shadow: 0 22px 50px rgba(29, 24, 20, 0.08);
+}
+
+.dark {
+  --bg: #121312;
+  --surface: rgba(24, 26, 25, 0.82);
+  --surface-strong: #181a19;
+  --text: #f4f1ec;
+  --muted: #a7a099;
+  --accent: #dbe8e0;
+  --accent-soft: rgba(219, 232, 224, 0.08);
+  --warm: #deb391;
+  --line: rgba(244, 241, 236, 0.08);
+  --line-strong: rgba(244, 241, 236, 0.16);
+  --shadow: 0 22px 50px rgba(0, 0, 0, 0.32);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  background:
+    radial-gradient(circle at top left, rgba(164, 104, 69, 0.12), transparent 24%),
+    radial-gradient(circle at top right, rgba(33, 54, 44, 0.1), transparent 20%),
+    var(--bg);
+  color: var(--text);
+  font-family: "Inter", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body,
+#root {
+  min-height: 100vh;
+}
+
+.font-serif {
+  font-family: "Iowan Old Style", "Palatino Linotype", "Times New Roman", serif;
+}
+
+::selection {
+  background: rgba(33, 54, 44, 0.18);
+}
+
+@media (max-width: 767px) {
+  html {
+    font-size: 15px;
+  }
+}
+
+@media print {
+  :root,
+  .dark {
+    --bg: #ffffff;
+    --surface: #ffffff;
+    --surface-strong: #ffffff;
+    --text: #161616;
+    --muted: #555555;
+    --accent: #202020;
+    --accent-soft: rgba(0, 0, 0, 0.05);
+    --warm: #666666;
+    --line: rgba(0, 0, 0, 0.1);
+    --line-strong: rgba(0, 0, 0, 0.16);
+    --shadow: none;
+  }
+
+  body {
+    background: #ffffff;
+    color: #161616;
+  }
+
+  header,
+  button {
+    display: none !important;
+  }
+
+  a[href]::after {
+    content: none !important;
+  }
+
+  section,
+  article,
+  div {
+    break-inside: avoid;
+  }
+}
