@@ -67,7 +67,7 @@ const projectMedia: Record<(typeof projectKeys)[number], string[]> = {
 }
 
 const sectionShellClass =
-  'scroll-mt-28 overflow-hidden rounded-[1.8rem] border border-[color:var(--line)] bg-[color:var(--surface)] shadow-[var(--shadow)] md:scroll-mt-32 print:rounded-none print:border print:shadow-none'
+  'overflow-hidden rounded-[1.8rem] border border-[color:var(--line)] bg-[color:var(--surface)] shadow-[var(--shadow)] print:rounded-none print:border print:shadow-none'
 const sectionHeaderClass = 'px-6 py-7 md:px-8'
 const sectionContentClass = 'border-t border-[color:var(--line)] bg-[color:var(--surface-strong)] px-5 py-5 md:px-6 md:py-6'
 const elevatedCardClass =
@@ -208,7 +208,7 @@ function App() {
           initial={{ opacity: 0, y: 28 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.55 }}
-          className="scroll-mt-28 relative overflow-hidden rounded-[2rem] border border-[color:var(--line)] bg-[linear-gradient(145deg,rgba(255,253,249,0.99)_0%,rgba(248,242,234,0.96)_55%,rgba(239,232,223,0.92)_100%)] shadow-[var(--shadow)] md:scroll-mt-32 dark:bg-[linear-gradient(145deg,rgba(24,26,25,0.98)_0%,rgba(19,21,20,0.96)_55%,rgba(16,17,16,0.94)_100%)] print:rounded-none print:border print:shadow-none"
+          className="relative overflow-hidden rounded-[2rem] border border-[color:var(--line)] bg-[linear-gradient(145deg,rgba(255,253,249,0.99)_0%,rgba(248,242,234,0.96)_55%,rgba(239,232,223,0.92)_100%)] shadow-[var(--shadow)] dark:bg-[linear-gradient(145deg,rgba(24,26,25,0.98)_0%,rgba(19,21,20,0.96)_55%,rgba(16,17,16,0.94)_100%)] print:rounded-none print:border print:shadow-none"
         >
           <motion.div
             className="absolute -left-20 top-0 h-72 w-72 rounded-full bg-[rgba(164,104,69,0.16)] blur-3xl dark:bg-[rgba(164,104,69,0.08)]"
@@ -546,7 +546,7 @@ function App() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[60] bg-black/45 px-4 py-6 backdrop-blur-sm print:hidden"
+            className="fixed inset-0 z-[60] overflow-y-auto bg-black/45 px-4 py-6 backdrop-blur-sm print:hidden"
             onClick={() => setSelectedProject(null)}
           >
             <motion.div
@@ -555,7 +555,7 @@ function App() {
               exit={{ opacity: 0, y: 18, scale: 0.98 }}
               transition={{ duration: 0.24 }}
               onClick={(event) => event.stopPropagation()}
-              className="mx-auto flex h-full max-w-4xl flex-col overflow-hidden rounded-[2rem] border border-white/15 bg-[color:var(--surface-strong)] shadow-2xl"
+              className="mx-auto flex max-h-[calc(100vh-3rem)] min-h-[min(720px,calc(100vh-3rem))] max-w-4xl flex-col overflow-hidden rounded-[2rem] border border-white/15 bg-[color:var(--surface-strong)] shadow-2xl"
             >
               <div className="flex items-start justify-between gap-4 border-b border-[color:var(--line)] px-6 py-5 md:px-8">
                 <div>
@@ -574,34 +574,36 @@ function App() {
                 </button>
               </div>
 
-              {selectedProject.images.length ? (
-                <div className="border-b border-[color:var(--line)] px-6 py-5 md:px-8">
-                  <div className="overflow-hidden rounded-[1.5rem] border border-[color:var(--line)] bg-[color:var(--surface)]">
-                    <img src={selectedProject.images[selectedImageIndex].src} alt={selectedProject.images[selectedImageIndex].alt} className="h-[260px] w-full object-cover md:h-[320px]" />
+              <div className="min-h-0 overflow-y-auto">
+                {selectedProject.images.length ? (
+                  <div className="border-b border-[color:var(--line)] px-6 py-5 md:px-8">
+                    <div className="overflow-hidden rounded-[1.5rem] border border-[color:var(--line)] bg-[color:var(--surface)]">
+                      <img src={selectedProject.images[selectedImageIndex].src} alt={selectedProject.images[selectedImageIndex].alt} className="h-[260px] w-full object-cover md:h-[320px]" />
+                    </div>
+                    <div className="mt-4 flex gap-3 overflow-x-auto pb-1">
+                      {selectedProject.images.map((image, index) => (
+                        <button
+                          key={image.src}
+                          type="button"
+                          onClick={() => setSelectedImageIndex(index)}
+                          className={`overflow-hidden rounded-[1rem] border transition ${
+                            selectedImageIndex === index
+                              ? 'border-[color:var(--line-strong)] shadow-[0_10px_20px_rgba(18,19,18,0.12)]'
+                              : 'border-[color:var(--line)] opacity-80 hover:opacity-100'
+                          }`}
+                        >
+                          <img src={image.src} alt={image.alt} className="h-20 w-28 object-cover md:h-24 md:w-36" />
+                        </button>
+                      ))}
+                    </div>
                   </div>
-                  <div className="mt-4 flex gap-3 overflow-x-auto pb-1">
-                    {selectedProject.images.map((image, index) => (
-                      <button
-                        key={image.src}
-                        type="button"
-                        onClick={() => setSelectedImageIndex(index)}
-                        className={`overflow-hidden rounded-[1rem] border transition ${
-                          selectedImageIndex === index
-                            ? 'border-[color:var(--line-strong)] shadow-[0_10px_20px_rgba(18,19,18,0.12)]'
-                            : 'border-[color:var(--line)] opacity-80 hover:opacity-100'
-                        }`}
-                      >
-                        <img src={image.src} alt={image.alt} className="h-20 w-28 object-cover md:h-24 md:w-36" />
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              ) : null}
+                ) : null}
 
-              <div className="overflow-y-auto px-6 py-6 md:px-8 md:py-8">
+                <div className="px-6 py-6 md:px-8 md:py-8">
                 <div className="prose prose-neutral max-w-none text-[15px] leading-8 prose-headings:text-[var(--text)] prose-headings:tracking-[-0.03em] prose-p:text-[var(--muted)] prose-li:text-[var(--muted)] dark:prose-invert">
                   <DetailMarkdown>{selectedProject.detail}</DetailMarkdown>
                 </div>
+              </div>
               </div>
             </motion.div>
           </motion.div>

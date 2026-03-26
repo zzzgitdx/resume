@@ -31,7 +31,7 @@
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 92px;
+  scroll-padding-top: 72px;
 }
 
 body {
@@ -64,7 +64,7 @@ body,
 @media (max-width: 767px) {
   html {
     font-size: 15px;
-    scroll-padding-top: 84px;
+    scroll-padding-top: 60px;
   }
 }
 
