@@ -358,13 +358,27 @@ function App() {
           </div>
         </section>
 
-        <SectionHeader id="contact" kicker={t('contact.kicker')} title={t('contact.title')} intro={t('contact.intro')} />
-        <section className="grid gap-5 md:grid-cols-2 xl:grid-cols-4 print:grid-cols-4">
-          <ContactCard icon={<UserRound className="h-5 w-5" />} label={t('contact.name')} value={t('profile.name')} />
-          <ContactCard icon={<Phone className="h-5 w-5" />} label={t('contact.phone')} value="13172918902" />
-          <ContactCard icon={<WeChatIcon className="h-5 w-5" />} label={t('contact.wechat')} value="zzzsrzsepsnd" />
-          <ContactCard icon={<MapPin className="h-5 w-5" />} label={t('contact.location')} value="广东清远" />
-          <ContactCard icon={<Mail className="h-5 w-5" />} label={t('contact.email')} value="1278511339@qq.com" className="md:col-span-2 xl:col-span-4" />
+        <section
+          id="contact"
+          className="overflow-hidden rounded-[1.8rem] border border-[color:var(--line)] bg-[color:var(--surface)] shadow-[var(--shadow)] print:rounded-none print:border print:shadow-none"
+        >
+          <div className="px-6 py-7 md:px-8">
+            <p className="text-xs font-semibold tracking-[0.24em] text-[var(--accent)] uppercase">{t('contact.kicker')}</p>
+            <div className="mt-3 space-y-4">
+              <h2 className="font-serif text-[2.4rem] tracking-[-0.05em] whitespace-nowrap md:text-[3.1rem] print:text-2xl">{t('contact.title')}</h2>
+              <p className="max-w-4xl text-sm leading-7 text-[var(--muted)] md:text-base print:text-xs print:leading-6">{t('contact.intro')}</p>
+            </div>
+          </div>
+
+          <div className="border-t border-[color:var(--line)] bg-[color:var(--surface-strong)] px-5 py-5 md:px-6 md:py-6">
+            <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-4 print:grid-cols-4">
+              <ContactCard icon={<UserRound className="h-5 w-5" />} label={t('contact.name')} value={t('profile.name')} />
+              <ContactCard icon={<Phone className="h-5 w-5" />} label={t('contact.phone')} value="13172918902" />
+              <ContactCard icon={<WeChatIcon className="h-5 w-5" />} label={t('contact.wechat')} value="zzzsrzsepsnd" />
+              <ContactCard icon={<MapPin className="h-5 w-5" />} label={t('contact.location')} value="广东清远" />
+              <ContactCard icon={<Mail className="h-5 w-5" />} label={t('contact.email')} value="1278511339@qq.com" className="md:col-span-2 xl:col-span-4" />
+            </div>
+          </div>
         </section>
       </main>
 
@@ -411,29 +425,6 @@ function App() {
         ) : null}
       </AnimatePresence>
     </div>
-  )
-}
-
-
-function SectionHeader({
-  id,
-  kicker,
-  title,
-  intro,
-}: {
-  id: string
-  kicker: string
-  title: string
-  intro: string
-}) {
-  return (
-    <section id={id} className="rounded-[1.8rem] border border-[color:var(--line)] bg-[color:var(--surface)] px-6 py-7 shadow-[var(--shadow)] print:rounded-none print:shadow-none md:px-8">
-      <p className="text-xs font-semibold tracking-[0.24em] text-[var(--accent)] uppercase">{kicker}</p>
-      <div className="mt-3 space-y-4">
-        <h2 className="font-serif text-[2.4rem] tracking-[-0.05em] whitespace-nowrap md:text-[3.1rem] print:text-2xl">{title}</h2>
-        <p className="max-w-4xl text-sm leading-7 text-[var(--muted)] md:text-base print:text-xs print:leading-6">{intro}</p>
-      </div>
-    </section>
   )
 }
 

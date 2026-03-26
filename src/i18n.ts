@@ -20,7 +20,7 @@ const resources = {
         title: '产品经理 / AI 协同设计',
         subtitle: '聚焦复杂 B 端业务流程、状态机设计与规则治理，持续用 AI 提升方案输出、文档沉淀与联调效率。',
         summary:
-          '作品集主要呈现三段真实产品经历：利众客户速录 V1.0 用于验证扫码获客与咨询链路，V2.0 聚焦资料结构、状态流转与客服操单的系统升级，代驾平台则体现我在既有业务中参与功能迭代、体验优化与运营支持。',
+          '作品集主要呈现三段真实产品经历：利众客户速录 V1.0 用于验证扫码获客与咨询链路，V2.0 聚焦资料结构、状态流转与客服操单的系统升级，代驾平台则体现功能迭代、体验优化与运营支持。',
         primary: '查看作品',
         secondary: '查看 V1 / V2 对比',
         stats: {
@@ -54,7 +54,7 @@ const resources = {
       works: {
         kicker: 'Selected Works',
         title: '作品区',
-        intro: '项目区不只展示功能，而是强调背景、责任、结果和设计取舍。每个项目都可以展开查看更完整的产品思路。',
+        intro: '不只展示功能，而是强调背景、责任、结果和设计取舍。每个项目都可以展开查看更完整的产品思路。',
         viewDetail: '查看详情',
       },
       compare: {
@@ -70,12 +70,12 @@ const resources = {
       ai: {
         kicker: 'AI Workflow',
         title: 'AI 协同工作方式',
-        intro: '这里强调的不是“会用提示词”，而是把 AI 作为产品工作流的一部分：需求拆解、流程建模、边界 case 推演、文档输出和联调问题定位。',
+        intro: '不是只写提示词，而是如何在真实项目里把 AI 用到需求拆解、流程推演、文档沉淀和联调问题定位中。',
       },
       contact: {
         kicker: 'Contact',
-        title: '联系',
-        intro: '当前版本已替换为真实联系信息。',
+        title: '联系方式',
+        intro: '当前可直接使用的联系方式，欢迎联系',
         name: '姓名',
         phone: '手机',
         email: '邮箱',
@@ -128,7 +128,7 @@ const resources = {
         {
           dimension: '客服操单',
           v1: '满足基础跟进与结单',
-          v2: '引入评估中、评估价已出、电话联系、结构化结单等机制',
+          v2: '引入评估中、评估价已出、结构化结单等机制',
         },
         {
           dimension: '系统治理',
@@ -175,7 +175,7 @@ const resources = {
         title: 'Product Manager / AI Collaboration',
         subtitle: 'Focused on complex B2B workflows, state models, and rule design, while using AI to improve output quality, documentation, and iteration speed.',
         summary:
-          'The portfolio centers on three real product experiences: Quick Capture V1.0 validated QR-based acquisition and consultation, V2.0 redesigned data structure, state transitions, and service workflow, and the chauffeur platform reflects my contribution to iterative feature work, UI refinement, and operational support.',
+          'The portfolio centers on three real product experiences: Quick Capture V1.0 validated QR-based acquisition and consultation, V2.0 focused on data structure, state transitions, and service workflow upgrades, and the chauffeur platform reflects feature iteration, UI refinement, and operational support.',
         primary: 'View Works',
         secondary: 'See V1 / V2 Comparison',
         stats: {
@@ -209,7 +209,7 @@ const resources = {
       works: {
         kicker: 'Selected Works',
         title: 'Works',
-        intro: 'Each project is framed around background, responsibility, outcome, and design trade-offs. You can open a fuller product narrative for each one.',
+        intro: 'These projects are not presented as feature lists. Each one focuses on context, responsibility, outcome, and design trade-offs, with a fuller narrative available inside.',
         viewDetail: 'View Details',
       },
       compare: {
@@ -225,12 +225,12 @@ const resources = {
       ai: {
         kicker: 'AI Workflow',
         title: 'How AI fits into my product workflow',
-        intro: 'The emphasis here is not prompt tricks. AI is embedded in requirement decomposition, workflow modeling, edge-case reasoning, documentation, and integration debugging.',
+        intro: 'This section is not about prompt tricks. It shows how AI is actually used in real projects for requirement decomposition, workflow reasoning, documentation, and integration debugging.',
       },
       contact: {
         kicker: 'Contact',
-        title: 'Contact',
-        intro: 'Current version uses real contact details.',
+        title: 'Contact Information',
+        intro: 'These are the current contact details for direct communication with hiring teams or business collaborators.',
         name: 'Name',
         phone: 'Phone',
         email: 'Email',
@@ -283,7 +283,7 @@ const resources = {
         {
           dimension: 'Service workflow',
           v1: 'Basic follow-up and closure',
-          v2: 'Added quoting, quote-ready, phone contact, and structured closure',
+          v2: 'Added quoting, quote-ready, and structured closure',
         },
         {
           dimension: 'Governance',
