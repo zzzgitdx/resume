@@ -5,22 +5,23 @@ const resources = {
   zh: {
     translation: {
       profile: {
-        brand: '张欣杰 · 产品作品集',
+        brand: '张欣杰 · 产品设计档案',
         name: '张欣杰',
       },
       nav: {
         hero: '首页',
         works: '作品',
         compare: 'V1 / V2 对比',
+        chauffeur: '代驾平台',
         ai: 'AI 协同',
-        contact: '联系',
+        contact: '联系方式',
       },
       hero: {
-        eyebrow: 'Product Portfolio',
+        eyebrow: 'Product Design Archive',
         title: '产品经理 / AI 协同设计',
         subtitle: '聚焦复杂 B 端业务流程、状态机设计与规则治理，持续用 AI 提升方案输出、文档沉淀与联调效率。',
         summary:
-          '作品集主要呈现三段真实产品经历：利众客户速录 V1.0 用于验证扫码获客与咨询链路，V2.0 聚焦资料结构、状态流转与客服操单的系统升级，代驾平台则体现功能迭代、体验优化与运营支持。',
+          '这份页面不是按时间堆经历，而是按三段真实项目组织：速录 V1.0 负责验证扫码获客与咨询链路，V2.0 与 AI 一起从 0 到 1 拆解、讨论并开发落地更完整的业务系统，代驾平台则对应既有产品中的参与式迭代、体验优化与运营支持。',
         primary: '查看作品',
         secondary: '查看 V1 / V2 对比',
         stats: {
@@ -70,12 +71,14 @@ const resources = {
       ai: {
         kicker: 'AI Workflow',
         title: 'AI 协同工作方式',
-        intro: '不是只写提示词，而是如何在真实项目里把 AI 用到需求拆解、流程推演、文档沉淀和联调问题定位中。',
+        intro: '这里强调的不是“会不会写提示词”，而是我在实际项目里长期并行使用的 3 类 AI：一起头脑风暴、整理文档归档，以及协助开发代码并把方案落地。',
       },
       contact: {
         kicker: 'Contact',
         title: '联系方式',
-        intro: '当前可直接使用的联系方式，欢迎联系',
+        intro: '当前以产品经理 / AI 协同设计方向为主，支持通过手机、微信或邮箱联系，适合沟通岗位机会、项目合作和案例交流。',
+        noteTitle: '联系说明',
+        noteBody: '适合用于沟通产品岗位、案例交流与项目合作。当前作品页和 GitHub Pages 均可作为延伸阅读入口，方便进一步了解项目背景、职责边界和落地方式。',
         name: '姓名',
         phone: '手机',
         email: '邮箱',
@@ -96,9 +99,9 @@ const resources = {
           title: '利众客户速录 V2.0',
           role: '产品经理',
           tag: '精细化升级',
-          summary: '围绕客户资料结构、状态流转、客服操单闭环和业务可追踪性进行升级，把初版系统重构成更完整的 B 端产品方案。',
-          body: '### 项目背景\n企业获客、客户留资、线索分配与客服跟进流程较为分散，缺少统一的业务闭环与清晰的状态流转机制。\n\n### 项目责任\n- 设计客户资料提交、公共池分配、评估回传、电话跟进及成交/未成交结单等核心流程\n- 梳理多角色协同关系和复杂规则\n- 结合 AI 辅助完成需求拆解、流程推演、边界场景分析和文档沉淀\n\n### 项目结果\n完成从客户进入到客服结单的完整产品方案设计并推动落地，提升了业务规则清晰度、流程可执行性及复杂方案的设计迭代效率。',
-          detail: '## 项目定位\nV2 不是简单加功能，而是对原有业务流程做结构性重构。重点在于把“资料完整度”“申请主状态”“客服动作记录”拆开治理，让产品逻辑和一线使用感受都更清晰。\n\n## 我负责的核心工作\n- 梳理平台管理员、企业账号、管理员、客服、合作商、客户之间的角色关系\n- 设计客户从扫码进入到客服结单的完整流程\n- 设计公共池分配、客户资料两步提交、评估回传、电话联系、已成交/未成交结单等关键环节\n- 把 AI 用在需求拆解、流程建模、边界场景推演和规则文档沉淀中\n\n## 升级重点\n- 客户资料从单层变为基础资料 + 进阶资料\n- 状态模型从粗粒度升级为更清晰的主状态与动作记录\n- 客服流程从“记录工具”往“辅助操单工具”方向靠近\n- 强化日志、规则、治理和可追踪性\n\n## 最终价值\nV2 提升的不只是页面数量，而是系统清晰度、业务可执行性和后续扩展空间。',
+          summary: '围绕客户资料结构、状态流转、客服操单闭环和业务可追踪性进行升级，与 AI 一起从 0 到 1 拆解、讨论并开发落地，把初版系统重构成更完整的 B 端产品方案。',
+          body: '### 项目背景\n企业获客、客户留资、线索分配与客服跟进流程较为分散，缺少统一的业务闭环与清晰的状态流转机制。\n\n### 项目责任\n- 与 AI 一起从 0 到 1 拆解需求、讨论方案并推进开发落地\n- 设计客户资料提交、公共池分配、评估回传、电话跟进及成交/未成交结单等核心流程\n- 梳理多角色协同关系和复杂规则，并沉淀为可执行文档\n\n### 项目结果\n完成从客户进入到客服结单的完整产品方案设计并推动落地，提升了业务规则清晰度、流程可执行性及复杂方案的设计迭代效率。',
+          detail: '## 项目定位\nV2 不是简单加功能，而是对原有业务流程做结构性重构。重点在于把“资料完整度”“申请主状态”“客服动作记录”拆开治理，让产品逻辑和一线使用感受都更清晰。\n\n## 我负责的核心工作\n- 与 AI 一起从 0 到 1 拆解需求、讨论方案并推动开发落地\n- 梳理平台管理员、企业账号、管理员、客服、合作商、客户之间的角色关系\n- 设计客户从扫码进入到客服结单的完整流程\n- 设计公共池分配、客户资料两步提交、评估回传、电话联系、已成交/未成交结单等关键环节\n- 把 AI 用在需求拆解、流程建模、边界场景推演、代码落地协作和规则文档沉淀中\n\n## 升级重点\n- 客户资料从单层变为基础资料 + 进阶资料\n- 状态模型从粗粒度升级为更清晰的主状态与动作记录\n- 客服流程从“记录工具”往“辅助操单工具”方向靠近\n- 强化日志、规则、治理和可追踪性\n\n## 最终价值\nV2 提升的不只是页面数量，而是系统清晰度、业务可执行性，以及与 AI 共同推进复杂业务方案落地的能力。',
         },
         daijia: {
           title: '利众代驾平台',
@@ -108,6 +111,34 @@ const resources = {
           body: '### 项目背景\n面向清远本地代驾服务场景，平台覆盖用户端、司机端与后台管理端，用于支撑本地代驾业务的线上化运营。\n\n### 项目责任\n- 参与平台部分功能设计与迭代\n- 负责页面 UI 优化、业务数据整理分析及部分运营物料设计\n- 支持司机管理、订单中心、调度中心等模块的持续完善\n\n### 项目结果\n支持代驾平台功能优化与运营协同，提升了部分页面体验、数据整理效率及项目日常运营支持能力。',
           detail: '## 项目定位\n这个项目不是从 0 到 1 主导搭建，而是我在既有业务基础上，参与部分功能和体验层的持续优化。\n\n## 我主要负责的内容\n- 页面 UI 细节优化\n- 业务数据的整理与分析支持\n- 部分运营物料设计\n- 协助推进司机管理、订单中心、调度中心等模块的产品迭代\n\n## 这段经历体现的能力\n- 在成熟业务中参与迭代，而不只是从零设计\n- 兼顾产品、页面体验、数据整理和运营支持\n- 能在局部职责范围内稳定推动优化落地',
         },
+      },
+      chauffeur: {
+        kicker: 'Chauffeur Platform',
+        title: '清远代驾平台',
+        intro: '这一段单独拿出来，是因为它和速录项目不同：不是从零主导完整系统，而是在既有业务中参与功能迭代、UI 优化、数据整理和运营支持。',
+        storyTitle: '参与式产品迭代',
+        storyBody:
+          '这个项目覆盖用户端、司机端和后台管理端，核心不是重做系统，而是在真实运营中持续补齐局部功能、体验和协同效率。我负责的工作更偏“在既有产品里把细节做稳”，包括部分功能设计、UI 调整、数据整理分析和部分运营物料支持。',
+        bullets: [
+          '覆盖用户端、司机端与后台管理端，场景明确、链路完整。',
+          '参与司机管理、订单中心、调度中心等模块的部分功能迭代。',
+          '同时承担页面 UI 细化、业务数据整理分析和部分运营物料设计。',
+        ],
+        cards: [
+          {
+            title: '系统范围',
+            desc: '用户下单、司机接单、后台司机管理、订单中心与调度中心共同构成完整代驾链路。',
+          },
+          {
+            title: '我的参与',
+            desc: '部分功能设计、页面 UI 调整、数据整理分析，以及部分运营物料设计与协同支持。',
+          },
+          {
+            title: '这段价值',
+            desc: '体现的是我在成熟业务中参与式迭代和跨产品、数据、运营协同推进的能力，而不只是一味强调从零搭建。',
+          },
+        ],
+        cta: '查看代驾详情',
       },
       comparisonRows: [
         {
@@ -138,16 +169,16 @@ const resources = {
       ],
       aiCards: [
         {
-          title: '需求拆解',
-          desc: '把零散诉求整理成模块、状态、条件和边界，避免方案只停留在页面层。',
+          title: '头脑风暴 AI',
+          desc: '用于拆解需求、补充视角和推演方案，把零散想法整理成更完整的产品判断。',
         },
         {
-          title: '流程推演',
-          desc: '围绕多角色链路预判异常场景，提前发现重复建单、错归属、状态冲突等问题。',
+          title: '文档归档 AI',
+          desc: '用于整理需求文档、规则清单、页面文案和归档内容，减少表达和同步成本。',
         },
         {
-          title: '文档与联调',
-          desc: '持续用 AI 整理规则文档、统一表达口径，并辅助定位联调问题。',
+          title: '开发落地 AI',
+          desc: '用于辅助写代码、推进页面开发和联调修正，把方案真正落到可运行的产品里。',
         },
       ],
       labels: {
@@ -160,22 +191,23 @@ const resources = {
   en: {
     translation: {
       profile: {
-        brand: 'Zhang Xinjie · Portfolio',
+        brand: 'Zhang Xinjie · Product Design Archive',
         name: 'Zhang Xinjie',
       },
       nav: {
         hero: 'Home',
         works: 'Works',
         compare: 'V1 / V2',
+        chauffeur: 'Chauffeur',
         ai: 'AI Workflow',
         contact: 'Contact',
       },
       hero: {
-        eyebrow: 'Product Portfolio',
+        eyebrow: 'Product Design Archive',
         title: 'Product Manager / AI Collaboration',
         subtitle: 'Focused on complex B2B workflows, state models, and rule design, while using AI to improve output quality, documentation, and iteration speed.',
         summary:
-          'The portfolio centers on three real product experiences: Quick Capture V1.0 validated QR-based acquisition and consultation, V2.0 focused on data structure, state transitions, and service workflow upgrades, and the chauffeur platform reflects feature iteration, UI refinement, and operational support.',
+          'This page is organized by three real product tracks rather than by timeline: Quick Capture V1.0 validated a QR-based acquisition funnel, V2.0 was decomposed, discussed, and shipped from 0 to 1 together with AI, and the chauffeur platform reflects iterative work inside an existing operational product.',
         primary: 'View Works',
         secondary: 'See V1 / V2 Comparison',
         stats: {
@@ -225,12 +257,14 @@ const resources = {
       ai: {
         kicker: 'AI Workflow',
         title: 'How AI fits into my product workflow',
-        intro: 'This section is not about prompt tricks. It shows how AI is actually used in real projects for requirement decomposition, workflow reasoning, documentation, and integration debugging.',
+        intro: 'This is not about prompt tricks. It reflects the three AI roles I actually keep in the workflow: one for brainstorming, one for documentation and archiving, and one for coding and delivery.',
       },
       contact: {
         kicker: 'Contact',
         title: 'Contact Information',
-        intro: 'These are the current contact details for direct communication with hiring teams or business collaborators.',
+        intro: 'Currently open to product manager and AI-collaborative design roles. Phone, WeChat, and email are all available for job opportunities, project collaboration, and case discussion.',
+        noteTitle: 'How to reach out',
+        noteBody: 'Suitable for role discussion, project collaboration, and case exchange. The live portfolio page and GitHub Pages deployment can both be used as follow-up references when a deeper project discussion is needed.',
         name: 'Name',
         phone: 'Phone',
         email: 'Email',
@@ -251,9 +285,9 @@ const resources = {
           title: 'Lizhong Quick Capture V2.0',
           role: 'Product Manager',
           tag: 'Operational refinement',
-          summary: 'A structural upgrade focused on customer data, state transitions, customer-service workflows, and traceability, turning the MVP into a clearer B2B product system.',
-          body: '### Background\nLead capture, customer submission, assignment, and follow-up were fragmented and lacked a unified closed-loop process and a clear state model.\n\n### Responsibility\n- Designed key flows for data submission, pool assignment, quote return, phone follow-up, and deal success / failure\n- Structured multi-role collaboration and rule systems\n- Used AI for decomposition, workflow reasoning, edge-case analysis, and documentation\n\n### Result\nDelivered and pushed forward a complete product solution from customer entry to service closure, improving rule clarity, operability, and iteration efficiency for a complex B2B system.',
-          detail: '## Positioning\nV2 was not just feature expansion. It was a structural redesign of the original business workflow. The key was to separate profile completeness, application stage, and service action records so the system became clearer both logically and operationally.\n\n## My responsibilities\n- Mapped multi-role relationships across platform admin, enterprise, manager, customer service, cooperator, and customer\n- Designed the full journey from customer entry to service closure\n- Defined flows for submission, pool assignment, quote return, phone follow-up, and structured closure\n- Used AI for requirement decomposition, workflow reasoning, edge-case analysis, and documentation\n\n## Outcome\nThe result was a more governable system with clearer rules, better operator understanding, and stronger extensibility.',
+          summary: 'A structural upgrade focused on customer data, state transitions, customer-service workflows, and traceability. The solution was decomposed, discussed, and shipped from 0 to 1 together with AI.',
+          body: '### Background\nLead capture, customer submission, assignment, and follow-up were fragmented and lacked a unified closed-loop process and a clear state model.\n\n### Responsibility\n- Worked with AI from 0 to 1 to break down requirements, compare options, and move the solution into development\n- Designed key flows for data submission, pool assignment, quote return, phone follow-up, and deal success / failure\n- Structured multi-role collaboration and rule systems, then documented them into actionable specs\n\n### Result\nDelivered and pushed forward a complete product solution from customer entry to service closure, improving rule clarity, operability, and iteration efficiency for a complex B2B system.',
+          detail: '## Positioning\nV2 was not just feature expansion. It was a structural redesign of the original business workflow. The key was to separate profile completeness, application stage, and service action records so the system became clearer both logically and operationally.\n\n## My responsibilities\n- Worked with AI from 0 to 1 to break down requirements, compare options, and support development delivery\n- Mapped multi-role relationships across platform admin, enterprise, manager, customer service, cooperator, and customer\n- Designed the full journey from customer entry to service closure\n- Defined flows for submission, pool assignment, quote return, phone follow-up, and structured closure\n- Used AI for requirement decomposition, workflow reasoning, edge-case analysis, coding collaboration, and documentation\n\n## Outcome\nThe result was a more governable system with clearer rules, better operator understanding, stronger extensibility, and a complete example of product work carried through with AI support.',
         },
         daijia: {
           title: 'Lizhong Chauffeur Platform',
@@ -263,6 +297,34 @@ const resources = {
           body: '### Background\nA local chauffeur-service platform for Qingyuan, covering user app, driver app, and backend operations.\n\n### Responsibility\n- Contributed to selected feature iterations\n- Improved page UI, organized business data, and designed operational materials\n- Supported ongoing refinement of driver management, order center, and dispatch center\n\n### Result\nSupported product optimization and operations alignment, improving page usability, data organization efficiency, and routine operational support.',
           detail: '## Positioning\nThis project was not a full 0-to-1 product led entirely by me. My contribution sat within an existing operational product, focused on improving selected functions and supporting the team with product, UI, and data work.\n\n## Main contributions\n- UI refinements on selected pages\n- Business data organization and analysis support\n- Operational material design\n- Support for iterative refinement of driver management, order center, and dispatch center\n\n## What it demonstrates\n- Ability to contribute inside an existing product context, not only from scratch\n- Comfort working across product, interface polish, data support, and operations needs',
         },
+      },
+      chauffeur: {
+        kicker: 'Chauffeur Platform',
+        title: 'Qingyuan Chauffeur Platform',
+        intro: 'This section is separated because it differs from the Quick Capture projects: it was not a full from-scratch rebuild, but iterative work inside an existing business covering feature refinement, UI polish, data organization, and operational support.',
+        storyTitle: 'Iterative contribution inside a running product',
+        storyBody:
+          'The platform covers user, driver, and backend operation sides. My responsibility was not to redefine the whole system, but to make specific parts more stable through selected feature work, UI refinement, data organization, and operational material support.',
+        bullets: [
+          'The business scope spans user ordering, driver fulfillment, and backend management with a complete local chauffeur workflow.',
+          'I contributed to selected modules such as driver management, order center, and dispatch center.',
+          'The work combined product iteration, UI refinement, data support, and operational coordination inside an existing business.',
+        ],
+        cards: [
+          {
+            title: 'System scope',
+            desc: 'User app, driver app, driver management, order center, and dispatch center together form the complete chauffeur service chain.',
+          },
+          {
+            title: 'My scope',
+            desc: 'Selected feature design, UI refinement, data organization and analysis, plus operational material support.',
+          },
+          {
+            title: 'What it shows',
+            desc: 'It reflects my ability to contribute inside an existing product context and move iteration forward across product, data, and operations.',
+          },
+        ],
+        cta: 'View chauffeur details',
       },
       comparisonRows: [
         {
@@ -293,16 +355,16 @@ const resources = {
       ],
       aiCards: [
         {
-          title: 'Requirement Breakdown',
-          desc: 'Turn fragmented asks into modules, states, conditions, and boundaries instead of stopping at UI ideas.',
+          title: 'Brainstorming AI',
+          desc: 'Used to break down asks, widen perspectives, and push ideas into more complete product options instead of staying at first impressions.',
         },
         {
-          title: 'Workflow Reasoning',
-          desc: 'Use AI to reason through multi-role edge cases early and surface structural risks.',
+          title: 'Documentation AI',
+          desc: 'Used to organize requirement docs, rule sheets, page copy, and archives so communication and alignment stay consistent.',
         },
         {
-          title: 'Docs and Debugging',
-          desc: 'Use AI to maintain rule docs, unify language, and speed up integration debugging.',
+          title: 'Delivery AI',
+          desc: 'Used to assist with code, page implementation, and integration fixes so the product solution can actually be shipped.',
         },
       ],
       labels: {

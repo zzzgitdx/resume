@@ -5,6 +5,9 @@ import {
   Blocks,
   Bot,
   BriefcaseBusiness,
+  CarFront,
+  Code2,
+  FileText,
   Languages,
   Mail,
   MapPin,
@@ -25,9 +28,14 @@ type ComparisonRow = {
   v2: string
 }
 
-type AICard = {
+type InfoCard = {
   title: string
   desc: string
+}
+
+type ProjectImage = {
+  src: string
+  alt: string
 }
 
 type Project = {
@@ -38,17 +46,32 @@ type Project = {
   summary: string
   body: string
   detail: string
+  images: ProjectImage[]
 }
 
 const navItems = [
   { key: 'hero', id: 'hero' },
   { key: 'works', id: 'works' },
   { key: 'compare', id: 'compare' },
+  { key: 'chauffeur', id: 'chauffeur' },
   { key: 'ai', id: 'ai' },
   { key: 'contact', id: 'contact' },
 ] as const
 
 const projectKeys = ['v1', 'v2', 'daijia'] as const
+
+const projectMedia: Record<(typeof projectKeys)[number], string[]> = {
+  v1: ['portfolio/v1-1.svg', 'portfolio/v1-2.svg'],
+  v2: ['portfolio/v2-1.svg', 'portfolio/v2-2.svg'],
+  daijia: ['portfolio/daijia-1.svg', 'portfolio/daijia-2.svg'],
+}
+
+const sectionShellClass =
+  'scroll-mt-28 overflow-hidden rounded-[1.8rem] border border-[color:var(--line)] bg-[color:var(--surface)] shadow-[var(--shadow)] md:scroll-mt-32 print:rounded-none print:border print:shadow-none'
+const sectionHeaderClass = 'px-6 py-7 md:px-8'
+const sectionContentClass = 'border-t border-[color:var(--line)] bg-[color:var(--surface-strong)] px-5 py-5 md:px-6 md:py-6'
+const elevatedCardClass =
+  'rounded-[1.55rem] border border-[color:var(--line)] bg-[color:var(--surface-strong)] p-6 shadow-[0_14px_32px_rgba(18,19,18,0.06)] transition duration-150 ease-out dark:shadow-[0_14px_30px_rgba(0,0,0,0.18)] print:shadow-none'
 
 function App() {
   const { t, i18n } = useTranslation()
@@ -59,11 +82,16 @@ function App() {
     return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
   })
   const [selectedProject, setSelectedProject] = useState<Project | null>(null)
+  const [selectedImageIndex, setSelectedImageIndex] = useState(0)
 
   useEffect(() => {
     document.documentElement.classList.toggle('dark', theme === 'dark')
     window.localStorage.setItem('resume-theme', theme)
   }, [theme])
+
+  useEffect(() => {
+    document.title = t('profile.brand')
+  }, [i18n.language, t])
 
   useEffect(() => {
     document.body.style.overflow = selectedProject ? 'hidden' : ''
@@ -73,8 +101,42 @@ function App() {
   }, [selectedProject])
 
   const comparisonRows = t('comparisonRows', { returnObjects: true }) as ComparisonRow[]
-  const aiCards = t('aiCards', { returnObjects: true }) as AICard[]
-  const heroInsights = t('hero.insights', { returnObjects: true }) as AICard[]
+  const aiCards = t('aiCards', { returnObjects: true }) as InfoCard[]
+  const chauffeurCards = t('chauffeur.cards', { returnObjects: true }) as InfoCard[]
+  const chauffeurBullets = t('chauffeur.bullets', { returnObjects: true }) as string[]
+
+  const heroCards = useMemo(
+    () => [
+      {
+        title: t('hero.stats.role'),
+        desc: t('hero.stats.roleValue'),
+        icon: <BriefcaseBusiness className="h-5 w-5" />,
+      },
+      {
+        title: t('hero.stats.style'),
+        desc: t('hero.stats.styleValue'),
+        icon: <Bot className="h-5 w-5" />,
+      },
+      {
+        title: t('hero.stats.focus'),
+        desc: t('hero.stats.focusValue'),
+        icon: <Blocks className="h-5 w-5" />,
+      },
+    ],
+    [t],
+  )
+
+  const aiIcons = [
+    <Bot className="h-5 w-5" key="brain" />,
+    <FileText className="h-5 w-5" key="docs" />,
+    <Code2 className="h-5 w-5" key="ship" />,
+  ]
+
+  const chauffeurIcons = [
+    <CarFront className="h-5 w-5" key="scope" />,
+    <Blocks className="h-5 w-5" key="work" />,
+    <ArrowDownRight className="h-5 w-5" key="value" />,
+  ]
 
   const projects = useMemo<Project[]>(
     () =>
@@ -86,9 +148,20 @@ function App() {
         summary: t(`projects.${key}.summary`),
         body: t(`projects.${key}.body`),
         detail: t(`projects.${key}.detail`),
+        images: (projectMedia[key] ?? []).map((path, index) => ({
+          src: `${import.meta.env.BASE_URL}${path}`,
+          alt: `${t(`projects.${key}.title`)} ${index + 1}`,
+        })),
       })),
     [t],
   )
+
+  const daijiaProject = projects.find((project) => project.key === 'daijia') ?? null
+
+  const openProject = (project: Project) => {
+    setSelectedImageIndex(0)
+    setSelectedProject(project)
+  }
 
   return (
     <div className="min-h-screen bg-[var(--bg)] text-[var(--text)] transition-colors duration-300 print:bg-white">
@@ -135,7 +208,7 @@ function App() {
           initial={{ opacity: 0, y: 28 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.55 }}
-          className="relative overflow-hidden rounded-[2rem] border border-[color:var(--line)] bg-[linear-gradient(145deg,rgba(255,253,249,0.99)_0%,rgba(248,242,234,0.96)_55%,rgba(239,232,223,0.92)_100%)] shadow-[var(--shadow)] dark:bg-[linear-gradient(145deg,rgba(24,26,25,0.98)_0%,rgba(19,21,20,0.96)_55%,rgba(16,17,16,0.94)_100%)] print:rounded-none print:border print:shadow-none"
+          className="scroll-mt-28 relative overflow-hidden rounded-[2rem] border border-[color:var(--line)] bg-[linear-gradient(145deg,rgba(255,253,249,0.99)_0%,rgba(248,242,234,0.96)_55%,rgba(239,232,223,0.92)_100%)] shadow-[var(--shadow)] md:scroll-mt-32 dark:bg-[linear-gradient(145deg,rgba(24,26,25,0.98)_0%,rgba(19,21,20,0.96)_55%,rgba(16,17,16,0.94)_100%)] print:rounded-none print:border print:shadow-none"
         >
           <motion.div
             className="absolute -left-20 top-0 h-72 w-72 rounded-full bg-[rgba(164,104,69,0.16)] blur-3xl dark:bg-[rgba(164,104,69,0.08)]"
@@ -153,7 +226,7 @@ function App() {
             transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
           />
 
-          <div className="relative z-10 grid gap-10 p-8 md:grid-cols-[minmax(0,1fr)_340px] md:p-12 print:grid-cols-1 print:p-8">
+          <div className="relative z-10 grid gap-10 p-8 md:grid-cols-[minmax(0,1fr)_320px] md:p-12 print:grid-cols-1 print:p-8">
             <div>
               <span className="inline-flex rounded-full bg-[color:var(--accent-soft)] px-4 py-2 text-xs font-semibold tracking-[0.24em] text-[var(--accent)] uppercase">
                 {t('hero.eyebrow')}
@@ -176,14 +249,14 @@ function App() {
                   { icon: <Phone className="h-4 w-4" />, label: '13172918902' },
                   { icon: <WeChatIcon className="h-4 w-4" />, label: 'zzzsrzsepsnd' },
                   { icon: <Mail className="h-4 w-4" />, label: '1278511339@qq.com' },
-                  { icon: <MapPin className="h-4 w-4" />, label: '广东清远' },
+                  { icon: <MapPin className="h-4 w-4" />, label: t('contact.locationValue') },
                 ].map((item, index) => (
                   <motion.div
                     key={item.label}
                     initial={{ opacity: 0, y: 16 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.22 + index * 0.05, duration: 0.42 }}
-                    whileHover={{ y: -3, scale: 1.01 }}
+                    whileHover={{ y: -3, scale: 1.01, transition: { duration: 0.16, ease: 'easeOut' } }}
                   >
                     <QuickChip icon={item.icon} label={item.label} />
                   </motion.div>
@@ -206,36 +279,24 @@ function App() {
               </motion.div>
             </div>
 
-            <div className="grid gap-2.5 self-start print:hidden">
-              {heroInsights.map((item, index) => {
-                const icon = [
-                  <BriefcaseBusiness className="h-5 w-5" key="role" />,
-                  <Blocks className="h-5 w-5" key="roles" />,
-                  <Bot className="h-5 w-5" key="ai" />,
-                  <ArrowDownRight className="h-5 w-5" key="iteration" />,
-                ][index]
-
-                return (
-                  <motion.div
-                    key={item.title}
-                    initial={{ opacity: 0, x: 28, y: 10, scale: 0.96 }}
-                    animate={{ opacity: 1, x: 0, y: 0, scale: 1 }}
-                    transition={{ delay: 0.16 + index * 0.08, duration: 0.5, ease: 'easeOut' }}
-                    whileHover={{ y: -4, scale: 1.01, transition: { duration: 0.14, ease: 'easeOut' } }}
-                  >
-                    <HeroInsightCard icon={icon} title={item.title} desc={item.desc} />
-                  </motion.div>
-                )
-              })}
+            <div className="grid auto-rows-fr gap-3 self-stretch print:hidden">
+              {heroCards.map((item, index) => (
+                <motion.div
+                  key={item.title}
+                  initial={{ opacity: 0, x: 26, y: 10, scale: 0.97 }}
+                  animate={{ opacity: 1, x: 0, y: 0, scale: 1 }}
+                  transition={{ delay: 0.16 + index * 0.08, duration: 0.45, ease: 'easeOut' }}
+                  whileHover={{ y: -4, scale: 1.012, transition: { duration: 0.14, ease: 'easeOut' } }}
+                >
+                  <HeroStatCard icon={item.icon} title={item.title} value={item.desc} />
+                </motion.div>
+              ))}
             </div>
           </div>
         </motion.section>
 
-        <section
-          id="works"
-          className="overflow-hidden rounded-[1.8rem] border border-[color:var(--line)] bg-[color:var(--surface)] shadow-[var(--shadow)] print:rounded-none print:border print:shadow-none"
-        >
-          <div className="px-6 py-7 md:px-8">
+        <section id="works" className={sectionShellClass}>
+          <div className={sectionHeaderClass}>
             <p className="text-xs font-semibold tracking-[0.24em] text-[var(--accent)] uppercase">{t('works.kicker')}</p>
             <div className="mt-3 space-y-4">
               <h2 className="font-serif text-[2.4rem] tracking-[-0.05em] whitespace-nowrap md:text-[3.1rem] print:text-2xl">{t('works.title')}</h2>
@@ -243,7 +304,7 @@ function App() {
             </div>
           </div>
 
-          <div className="border-t border-[color:var(--line)] bg-[color:var(--surface-strong)] px-5 py-5 md:px-6 md:py-6">
+          <div className={sectionContentClass}>
             <div className="grid gap-5 lg:grid-cols-3 print:grid-cols-1">
               {projects.map((project, index) => (
                 <motion.article
@@ -252,7 +313,7 @@ function App() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, amount: 0.25 }}
                   transition={{ delay: index * 0.08, duration: 0.45 }}
-                  className="group flex h-full flex-col rounded-[1.8rem] border border-[color:var(--line)] bg-[color:var(--surface-strong)] p-6 shadow-[var(--shadow)] transition hover:-translate-y-1 hover:border-[color:var(--line-strong)] print:break-inside-avoid print:shadow-none"
+                  className={`${elevatedCardClass} group flex h-full flex-col hover:-translate-y-1 hover:border-[color:var(--line-strong)]`}
                 >
                   <div className="mb-5 flex items-start justify-between gap-4">
                     <div>
@@ -270,7 +331,7 @@ function App() {
                   </div>
                   <button
                     type="button"
-                    onClick={() => setSelectedProject(project)}
+                    onClick={() => openProject(project)}
                     className="mt-6 inline-flex items-center gap-2 self-start rounded-full border border-[color:var(--line-strong)] px-4 py-2 text-sm font-medium text-[var(--text)] transition hover:bg-[color:var(--accent-soft)] print:hidden"
                   >
                     {t('works.viewDetail')}
@@ -282,11 +343,8 @@ function App() {
           </div>
         </section>
 
-        <section
-          id="compare"
-          className="overflow-hidden rounded-[1.8rem] border border-[color:var(--line)] bg-[color:var(--surface)] shadow-[var(--shadow)] print:rounded-none print:border print:shadow-none"
-        >
-          <div className="px-6 py-7 md:px-8">
+        <section id="compare" className={sectionShellClass}>
+          <div className={sectionHeaderClass}>
             <p className="text-xs font-semibold tracking-[0.24em] text-[var(--accent)] uppercase">{t('compare.kicker')}</p>
             <div className="mt-3 space-y-4">
               <h2 className="font-serif text-[2.4rem] tracking-[-0.05em] whitespace-nowrap md:text-[3.1rem] print:text-2xl">{t('compare.title')}</h2>
@@ -294,8 +352,8 @@ function App() {
             </div>
           </div>
 
-          <div className="border-t border-[color:var(--line)] bg-[color:var(--surface-strong)]">
-            <div className="hidden grid-cols-[0.85fr_1fr_1fr] border-b border-[color:var(--line)] bg-[color:var(--surface)] px-6 py-4 text-base font-semibold text-[var(--text)] md:grid">
+          <div className={`${sectionContentClass} px-0 py-0 md:px-0 md:py-0`}>
+            <div className="hidden grid-cols-[0.78fr_1fr_1fr] border-b border-[color:var(--line)] bg-[color:var(--surface)] px-6 py-4 text-[0.96rem] font-semibold tracking-[0.08em] text-[var(--accent)] uppercase md:grid">
               <div>{t('compare.columns.dimension')}</div>
               <div>{t('compare.columns.v1')}</div>
               <div>{t('compare.columns.v2')}</div>
@@ -308,13 +366,13 @@ function App() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, amount: 0.25 }}
                   transition={{ delay: index * 0.04, duration: 0.35 }}
-                  className="px-6 py-5 md:grid md:grid-cols-[0.85fr_1fr_1fr] md:gap-5"
+                  className="px-6 py-5 md:grid md:grid-cols-[0.78fr_1fr_1fr] md:gap-5"
                 >
                   <div className="mb-4 md:mb-0">
                     <div className="inline-flex rounded-full bg-[color:var(--accent-soft)] px-3 py-1 text-[11px] font-semibold tracking-[0.16em] text-[var(--accent)] uppercase md:hidden">
                       0{index + 1}
                     </div>
-                    <h3 className="mt-3 text-[0.98rem] font-semibold tracking-[-0.01em] text-[var(--text)] md:mt-0 md:text-[1rem]">{row.dimension}</h3>
+                    <h3 className="mt-3 text-[1.08rem] font-semibold tracking-[-0.02em] text-[var(--text)] md:mt-0 md:text-[1.12rem]">{row.dimension}</h3>
                   </div>
                   <CompareColumn label={t('compare.columns.v1')} value={row.v1} />
                   <CompareColumn label={t('compare.columns.v2')} value={row.v2} emphasize />
@@ -324,11 +382,76 @@ function App() {
           </div>
         </section>
 
-        <section
-          id="ai"
-          className="overflow-hidden rounded-[1.8rem] border border-[color:var(--line)] bg-[color:var(--surface)] shadow-[var(--shadow)] print:rounded-none print:border print:shadow-none"
-        >
-          <div className="px-6 py-7 md:px-8">
+        <section id="chauffeur" className={sectionShellClass}>
+          <div className={sectionHeaderClass}>
+            <p className="text-xs font-semibold tracking-[0.24em] text-[var(--accent)] uppercase">{t('chauffeur.kicker')}</p>
+            <div className="mt-3 space-y-4">
+              <h2 className="font-serif text-[2.4rem] tracking-[-0.05em] whitespace-nowrap md:text-[3.1rem] print:text-2xl">{t('chauffeur.title')}</h2>
+              <p className="max-w-4xl text-sm leading-7 text-[var(--muted)] md:text-base print:text-xs print:leading-6">{t('chauffeur.intro')}</p>
+            </div>
+          </div>
+
+          <div className={sectionContentClass}>
+            <div className="grid gap-5 xl:grid-cols-[1.12fr_0.88fr]">
+              <motion.article
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.3 }}
+                transition={{ duration: 0.42 }}
+                className={`${elevatedCardClass} flex h-full flex-col justify-between`}
+              >
+                <div>
+                  <span className="inline-flex rounded-full bg-[color:var(--accent-soft)] px-3 py-1 text-xs font-semibold tracking-[0.16em] text-[var(--accent)] uppercase">
+                    {daijiaProject?.tag ?? t('projects.daijia.tag')}
+                  </span>
+                  <h3 className="mt-4 text-2xl font-semibold tracking-[-0.04em]">{t('chauffeur.storyTitle')}</h3>
+                  <p className="mt-4 text-sm leading-7 text-[var(--muted)] md:text-base md:leading-8">{t('chauffeur.storyBody')}</p>
+                  <ul className="mt-5 space-y-3">
+                    {chauffeurBullets.map((item) => (
+                      <li key={item} className="flex gap-3 text-sm leading-7 text-[var(--muted)] before:mt-[11px] before:h-1.5 before:w-1.5 before:rounded-full before:bg-[var(--accent)] before:content-[''] md:text-base md:leading-8">
+                        <span>{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                {daijiaProject ? (
+                  <button
+                    type="button"
+                    onClick={() => openProject(daijiaProject)}
+                    className="mt-6 inline-flex items-center gap-2 self-start rounded-full border border-[color:var(--line-strong)] px-4 py-2 text-sm font-medium text-[var(--text)] transition hover:bg-[color:var(--accent-soft)] print:hidden"
+                  >
+                    {t('chauffeur.cta')}
+                    <ArrowDownRight className="h-4 w-4" />
+                  </button>
+                ) : null}
+              </motion.article>
+
+              <div className="grid gap-5">
+                {chauffeurCards.map((card, index) => (
+                  <motion.div
+                    key={card.title}
+                    initial={{ opacity: 0, y: 18 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, amount: 0.35 }}
+                    transition={{ delay: index * 0.06, duration: 0.36 }}
+                    whileHover={{ y: -4, scale: 1.01, transition: { duration: 0.16, ease: 'easeOut' } }}
+                    className={`${elevatedCardClass} hover:border-[color:var(--line-strong)]`}
+                  >
+                    <div className="flex items-center gap-3 text-[var(--accent)]">
+                      {chauffeurIcons[index]}
+                      <span className="text-[12px] font-semibold tracking-[0.16em] uppercase text-[var(--accent)]">{card.title}</span>
+                    </div>
+                    <p className="mt-3 text-sm leading-7 text-[var(--muted)] md:text-base md:leading-8">{card.desc}</p>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="ai" className={sectionShellClass}>
+          <div className={sectionHeaderClass}>
             <p className="text-xs font-semibold tracking-[0.24em] text-[var(--accent)] uppercase">{t('ai.kicker')}</p>
             <div className="mt-3 space-y-4">
               <h2 className="font-serif text-[2.4rem] tracking-[-0.05em] whitespace-nowrap md:text-[3.1rem] print:text-2xl">{t('ai.title')}</h2>
@@ -336,19 +459,20 @@ function App() {
             </div>
           </div>
 
-          <div className="border-t border-[color:var(--line)] bg-[color:var(--surface-strong)] px-5 py-5 md:px-6 md:py-6">
+          <div className={sectionContentClass}>
             <div className="grid gap-5 md:grid-cols-3 print:grid-cols-3">
               {aiCards.map((card, index) => (
                 <motion.div
                   key={card.title}
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, amount: 0.4 }}
+                  viewport={{ once: true, amount: 0.35 }}
                   transition={{ delay: index * 0.07, duration: 0.4 }}
-                  className="rounded-[1.6rem] border border-[color:var(--line)] bg-[color:var(--surface-strong)] p-6 shadow-[var(--shadow)] print:break-inside-avoid print:shadow-none"
+                  whileHover={{ y: -5, scale: 1.01, transition: { duration: 0.16, ease: 'easeOut' } }}
+                  className={`${elevatedCardClass} hover:border-[color:var(--line-strong)]`}
                 >
                   <div className="mb-4 inline-flex rounded-full bg-[color:var(--accent-soft)] p-3 text-[var(--accent)]">
-                    <Bot className="h-5 w-5" />
+                    {aiIcons[index]}
                   </div>
                   <h3 className="text-xl font-semibold tracking-[-0.04em] print:text-base">{card.title}</h3>
                   <p className="mt-3 text-sm leading-7 text-[var(--muted)] print:text-xs print:leading-6">{card.desc}</p>
@@ -358,11 +482,8 @@ function App() {
           </div>
         </section>
 
-        <section
-          id="contact"
-          className="overflow-hidden rounded-[1.8rem] border border-[color:var(--line)] bg-[color:var(--surface)] shadow-[var(--shadow)] print:rounded-none print:border print:shadow-none"
-        >
-          <div className="px-6 py-7 md:px-8">
+        <section id="contact" className={sectionShellClass}>
+          <div className={sectionHeaderClass}>
             <p className="text-xs font-semibold tracking-[0.24em] text-[var(--accent)] uppercase">{t('contact.kicker')}</p>
             <div className="mt-3 space-y-4">
               <h2 className="font-serif text-[2.4rem] tracking-[-0.05em] whitespace-nowrap md:text-[3.1rem] print:text-2xl">{t('contact.title')}</h2>
@@ -370,13 +491,50 @@ function App() {
             </div>
           </div>
 
-          <div className="border-t border-[color:var(--line)] bg-[color:var(--surface-strong)] px-5 py-5 md:px-6 md:py-6">
-            <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-4 print:grid-cols-4">
-              <ContactCard icon={<UserRound className="h-5 w-5" />} label={t('contact.name')} value={t('profile.name')} />
-              <ContactCard icon={<Phone className="h-5 w-5" />} label={t('contact.phone')} value="13172918902" />
-              <ContactCard icon={<WeChatIcon className="h-5 w-5" />} label={t('contact.wechat')} value="zzzsrzsepsnd" />
-              <ContactCard icon={<MapPin className="h-5 w-5" />} label={t('contact.location')} value="广东清远" />
-              <ContactCard icon={<Mail className="h-5 w-5" />} label={t('contact.email')} value="1278511339@qq.com" className="md:col-span-2 xl:col-span-4" />
+          <div className={sectionContentClass}>
+            <div className="grid gap-5 xl:grid-cols-[0.92fr_1.28fr]">
+              <motion.div
+                initial={{ opacity: 0, y: 18 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.35 }}
+                transition={{ duration: 0.38 }}
+                className={`${elevatedCardClass} flex h-full flex-col justify-between bg-[linear-gradient(160deg,rgba(255,253,249,0.92)_0%,rgba(246,240,232,0.88)_100%)] dark:bg-[linear-gradient(160deg,rgba(31,34,33,0.94)_0%,rgba(24,26,25,0.94)_100%)]`}
+              >
+                <div>
+                  <span className="inline-flex rounded-full bg-[color:var(--accent-soft)] px-3 py-1 text-xs font-semibold tracking-[0.16em] text-[var(--accent)] uppercase">
+                    {t('contact.noteTitle')}
+                  </span>
+                  <h3 className="mt-4 text-2xl font-semibold tracking-[-0.04em]">{t('hero.title')}</h3>
+                  <p className="mt-4 text-sm leading-7 text-[var(--muted)] md:text-base md:leading-8">{t('contact.noteBody')}</p>
+                </div>
+                <div className="mt-6 flex flex-wrap gap-3 text-sm text-[var(--muted)]">
+                  <QuickChip icon={<Phone className="h-4 w-4" />} label="13172918902" />
+                  <QuickChip icon={<WeChatIcon className="h-4 w-4" />} label="zzzsrzsepsnd" />
+                  <QuickChip icon={<Mail className="h-4 w-4" />} label="1278511339@qq.com" />
+                </div>
+              </motion.div>
+
+              <div className="grid gap-4 md:grid-cols-2">
+                {[
+                  { icon: <Phone className="h-5 w-5" />, label: t('contact.phone'), value: '13172918902' },
+                  { icon: <WeChatIcon className="h-5 w-5" />, label: t('contact.wechat'), value: 'zzzsrzsepsnd' },
+                  { icon: <Mail className="h-5 w-5" />, label: t('contact.email'), value: '1278511339@qq.com', className: 'md:col-span-2' },
+                  { icon: <UserRound className="h-5 w-5" />, label: t('contact.name'), value: t('profile.name') },
+                  { icon: <MapPin className="h-5 w-5" />, label: t('contact.location'), value: t('contact.locationValue') },
+                ].map((item, index) => (
+                  <motion.div
+                    key={`${item.label}-${item.value}`}
+                    initial={{ opacity: 0, y: 18 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, amount: 0.3 }}
+                    transition={{ delay: index * 0.05, duration: 0.35 }}
+                    whileHover={{ y: -4, scale: 1.01, transition: { duration: 0.16, ease: 'easeOut' } }}
+                    className={item.className}
+                  >
+                    <ContactCard icon={item.icon} label={item.label} value={item.value} />
+                  </motion.div>
+                ))}
+              </div>
             </div>
           </div>
         </section>
@@ -415,6 +573,31 @@ function App() {
                   <X className="h-5 w-5" />
                 </button>
               </div>
+
+              {selectedProject.images.length ? (
+                <div className="border-b border-[color:var(--line)] px-6 py-5 md:px-8">
+                  <div className="overflow-hidden rounded-[1.5rem] border border-[color:var(--line)] bg-[color:var(--surface)]">
+                    <img src={selectedProject.images[selectedImageIndex].src} alt={selectedProject.images[selectedImageIndex].alt} className="h-[260px] w-full object-cover md:h-[320px]" />
+                  </div>
+                  <div className="mt-4 flex gap-3 overflow-x-auto pb-1">
+                    {selectedProject.images.map((image, index) => (
+                      <button
+                        key={image.src}
+                        type="button"
+                        onClick={() => setSelectedImageIndex(index)}
+                        className={`overflow-hidden rounded-[1rem] border transition ${
+                          selectedImageIndex === index
+                            ? 'border-[color:var(--line-strong)] shadow-[0_10px_20px_rgba(18,19,18,0.12)]'
+                            : 'border-[color:var(--line)] opacity-80 hover:opacity-100'
+                        }`}
+                      >
+                        <img src={image.src} alt={image.alt} className="h-20 w-28 object-cover md:h-24 md:w-36" />
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              ) : null}
+
               <div className="overflow-y-auto px-6 py-6 md:px-8 md:py-8">
                 <div className="prose prose-neutral max-w-none text-[15px] leading-8 prose-headings:text-[var(--text)] prose-headings:tracking-[-0.03em] prose-p:text-[var(--muted)] prose-li:text-[var(--muted)] dark:prose-invert">
                   <DetailMarkdown>{selectedProject.detail}</DetailMarkdown>
@@ -430,7 +613,7 @@ function App() {
 
 function QuickChip({ icon, label }: { icon: React.ReactNode; label: string }) {
   return (
-    <div className="inline-flex items-center gap-2 rounded-full border border-[color:var(--line)] bg-[color:var(--surface)]/72 px-4 py-2 text-sm text-[var(--muted)] backdrop-blur-sm">
+    <div className="inline-flex items-center gap-2 rounded-full border border-[color:var(--line)] bg-[color:var(--surface)]/72 px-4 py-2 text-sm text-[var(--muted)] backdrop-blur-sm transition duration-150 ease-out hover:border-[color:var(--line-strong)] hover:bg-[color:var(--surface)]">
       <span className="text-[var(--accent)]">{icon}</span>
       <span>{label}</span>
     </div>
@@ -450,39 +633,23 @@ function WeChatIcon({ className = '' }: { className?: string }) {
   )
 }
 
-function HeroInsightCard({
-  icon,
-  title,
-  desc,
-}: {
-  icon: React.ReactNode
-  title: string
-  desc: string
-}) {
+function HeroStatCard({ icon, title, value }: { icon: React.ReactNode; title: string; value: string }) {
   return (
-    <div className="rounded-[1.35rem] border border-[color:var(--line)] bg-[color:var(--surface)]/88 p-4 backdrop-blur-sm transition-all duration-100 ease-out hover:border-[color:var(--line-strong)] hover:bg-[color:var(--surface)] hover:shadow-[0_18px_36px_rgba(18,19,18,0.08)] dark:hover:shadow-[0_18px_36px_rgba(0,0,0,0.22)]">
-      <div className="flex items-center gap-3 text-[var(--accent)] transition-colors duration-100 ease-out">
+    <div className="flex h-full flex-col justify-between rounded-[1.45rem] border border-[color:var(--line)] bg-[color:var(--surface)]/88 p-5 backdrop-blur-sm transition-all duration-100 ease-out hover:border-[color:var(--line-strong)] hover:bg-[color:var(--surface)] hover:shadow-[0_18px_36px_rgba(18,19,18,0.08)] dark:hover:shadow-[0_18px_36px_rgba(0,0,0,0.22)]">
+      <div className="flex items-center gap-3 text-[var(--accent)]">
         {icon}
-        <span className="text-[12px] font-semibold tracking-[0.14em] text-[var(--accent)] uppercase transition-colors duration-100 ease-out">{title}</span>
+        <span className="text-[12px] font-semibold tracking-[0.14em] text-[var(--accent)] uppercase">{title}</span>
       </div>
-      <p className="mt-2.5 text-[0.94rem] leading-6 text-[var(--muted)]">{desc}</p>
+      <p className="mt-5 text-[1.15rem] leading-7 text-[var(--text)]">{value}</p>
     </div>
   )
 }
 
-function CompareColumn({
-  label,
-  value,
-  emphasize = false,
-}: {
-  label: string
-  value: string
-  emphasize?: boolean
-}) {
+function CompareColumn({ label, value, emphasize = false }: { label: string; value: string; emphasize?: boolean }) {
   return (
-    <div className={`rounded-[1.25rem] border p-4 ${emphasize ? 'border-[color:var(--line-strong)] bg-[color:var(--accent-soft)]/55' : 'border-[color:var(--line)] bg-[color:var(--surface)]'} md:border-0 md:bg-transparent md:p-0`}>
+    <div className={`rounded-[1.2rem] border p-4 ${emphasize ? 'border-[color:var(--line-strong)] bg-[color:var(--accent-soft)]/55' : 'border-[color:var(--line)] bg-[color:var(--surface)]'} md:border-0 md:bg-transparent md:p-0`}>
       <p className="text-[11px] font-semibold tracking-[0.18em] text-[var(--accent)] uppercase md:hidden">{label}</p>
-      <p className="mt-3 text-[0.98rem] leading-7 text-[var(--muted)] md:mt-0 md:text-[1.02rem] md:leading-8">{value}</p>
+      <p className="mt-3 text-[0.98rem] leading-7 text-[var(--muted)] md:mt-0 md:text-[1rem] md:leading-8">{value}</p>
     </div>
   )
 }
@@ -536,19 +703,9 @@ function DetailMarkdown({ children }: { children: string }) {
   )
 }
 
-function ContactCard({
-  icon,
-  label,
-  value,
-  className = '',
-}: {
-  icon: React.ReactNode
-  label: string
-  value: string
-  className?: string
-}) {
+function ContactCard({ icon, label, value }: { icon: React.ReactNode; label: string; value: string }) {
   return (
-    <div className={`rounded-[1.5rem] border border-[color:var(--line)] bg-[color:var(--surface-strong)] p-6 shadow-[var(--shadow)] print:shadow-none ${className}`}>
+    <div className={elevatedCardClass}>
       <div className="flex items-center gap-3 text-[var(--accent)]">
         {icon}
         <span className="text-xs font-semibold tracking-[0.2em] uppercase text-[var(--muted)]">{label}</span>
