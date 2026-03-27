@@ -357,7 +357,18 @@ function App() {
           </div>
 
           <div className={sectionContentClass}>
-            <div className="grid gap-5 lg:grid-cols-3 print:grid-cols-1">
+            <div className="min-w-0 md:hidden">
+              <p className="mb-3 text-xs font-medium tracking-[0.08em] text-[var(--muted)]">左右滑动查看作品</p>
+              <div className="-mx-1 flex snap-x snap-mandatory gap-4 overflow-x-auto overscroll-x-contain px-1 pb-2 pr-6 touch-pan-x [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden works-mobile-carousel-marker">
+                {projects.map((project, index) => (
+                  <article key={project.key} className={`${elevatedCardClass} works-mobile-static-marker flex w-[19.25rem] shrink-0 snap-start flex-col`}>
+                    <ProjectCardContent project={project} index={index} onOpen={openProject} ctaLabel={t('works.viewDetail')} />
+                  </article>
+                ))}
+              </div>
+            </div>
+
+            <div className="hidden gap-5 md:grid lg:grid-cols-3 print:grid-cols-1">
               {projects.map((project, index) => (
                 <motion.article
                   key={project.key}
@@ -367,28 +378,7 @@ function App() {
                   transition={{ delay: index * 0.08, duration: 0.45 }}
                   className={`${elevatedCardClass} group flex h-full flex-col hover:-translate-y-1 hover:border-[color:var(--line-strong)]`}
                 >
-                  <div className="mb-5 flex items-start justify-between gap-4">
-                    <div>
-                      <span className="inline-flex rounded-full bg-[color:var(--accent-soft)] px-3 py-1 text-xs font-semibold tracking-[0.16em] text-[var(--accent)] uppercase">
-                        {project.tag}
-                      </span>
-                      <h3 className="mt-4 text-2xl font-semibold tracking-[-0.04em]">{project.title}</h3>
-                    </div>
-                    <span className="text-sm text-[var(--muted)]">0{index + 1}</span>
-                  </div>
-                  <p className="mb-4 text-sm text-[var(--warm)]">{project.role}</p>
-                  <p className="mb-5 text-sm leading-7 text-[var(--muted)]">{project.summary}</p>
-                  <div className="prose prose-neutral max-w-none flex-1 text-sm leading-7 prose-headings:mb-2 prose-headings:mt-4 prose-headings:text-base prose-headings:font-semibold prose-headings:text-[var(--text)] prose-p:text-[var(--muted)] prose-li:text-[var(--muted)] dark:prose-invert">
-                    <SummaryMarkdown>{project.body}</SummaryMarkdown>
-                  </div>
-                  <button
-                    type="button"
-                    onClick={() => openProject(project)}
-                    className="mt-6 inline-flex items-center gap-2 self-start rounded-full border border-[color:var(--line-strong)] px-4 py-2 text-sm font-medium text-[var(--text)] transition hover:bg-[color:var(--accent-soft)] print:hidden"
-                  >
-                    {t('works.viewDetail')}
-                    <ArrowDownRight className="h-4 w-4" />
-                  </button>
+                  <ProjectCardContent project={project} index={index} onOpen={openProject} ctaLabel={t('works.viewDetail')} />
                 </motion.article>
               ))}
             </div>
@@ -730,6 +720,45 @@ function SummaryMarkdown({ children }: { children: string }) {
         {children}
       </ReactMarkdown>
     </div>
+  )
+}
+
+function ProjectCardContent({
+  project,
+  index,
+  onOpen,
+  ctaLabel,
+}: {
+  project: Project
+  index: number
+  onOpen: (project: Project) => void
+  ctaLabel: string
+}) {
+  return (
+    <>
+      <div className="mb-5 flex items-start justify-between gap-4">
+        <div>
+          <span className="inline-flex rounded-full bg-[color:var(--accent-soft)] px-3 py-1 text-xs font-semibold tracking-[0.16em] text-[var(--accent)] uppercase">
+            {project.tag}
+          </span>
+          <h3 className="mt-4 text-2xl font-semibold tracking-[-0.04em]">{project.title}</h3>
+        </div>
+        <span className="text-sm text-[var(--muted)]">0{index + 1}</span>
+      </div>
+      <p className="mb-4 text-sm text-[var(--warm)]">{project.role}</p>
+      <p className="mb-5 text-sm leading-7 text-[var(--muted)]">{project.summary}</p>
+      <div className="prose prose-neutral max-w-none flex-1 text-sm leading-7 prose-headings:mb-2 prose-headings:mt-4 prose-headings:text-base prose-headings:font-semibold prose-headings:text-[var(--text)] prose-p:text-[var(--muted)] prose-li:text-[var(--muted)] dark:prose-invert">
+        <SummaryMarkdown>{project.body}</SummaryMarkdown>
+      </div>
+      <button
+        type="button"
+        onClick={() => onOpen(project)}
+        className="mt-6 inline-flex items-center gap-2 self-start rounded-full border border-[color:var(--line-strong)] px-4 py-2 text-sm font-medium text-[var(--text)] transition hover:bg-[color:var(--accent-soft)] print:hidden"
+      >
+        {ctaLabel}
+        <ArrowDownRight className="h-4 w-4" />
+      </button>
+    </>
   )
 }
 
