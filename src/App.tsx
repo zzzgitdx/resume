@@ -318,18 +318,28 @@ function App() {
               </motion.div>
             </div>
 
-            <div className="grid gap-3 self-start print:hidden">
-              {heroCards.map((item, index) => (
-                <motion.div
-                  key={item.title}
-                  initial={{ opacity: 0, x: 26, y: 10, scale: 0.97 }}
-                  animate={{ opacity: 1, x: 0, y: 0, scale: 1 }}
-                  transition={{ delay: 0.16 + index * 0.08, duration: 0.45, ease: 'easeOut' }}
-                  whileHover={{ y: -4, scale: 1.012, transition: { duration: 0.14, ease: 'easeOut' } }}
-                >
-                  <HeroStatCard icon={item.icon} title={item.title} value={item.desc} />
-                </motion.div>
-              ))}
+            <div className="print:hidden">
+              <div className="-mx-1 flex snap-x snap-mandatory gap-3 overflow-x-auto px-1 pb-2 md:hidden">
+                {heroCards.map((item) => (
+                  <div key={item.title} className="w-[17.5rem] shrink-0 snap-start">
+                    <HeroStatCard icon={item.icon} title={item.title} value={item.desc} />
+                  </div>
+                ))}
+              </div>
+
+              <div className="hidden gap-3 self-start md:grid">
+                {heroCards.map((item, index) => (
+                  <motion.div
+                    key={item.title}
+                    initial={{ opacity: 0, x: 26, y: 10, scale: 0.97 }}
+                    animate={{ opacity: 1, x: 0, y: 0, scale: 1 }}
+                    transition={{ delay: 0.16 + index * 0.08, duration: 0.45, ease: 'easeOut' }}
+                    whileHover={{ y: -4, scale: 1.012, transition: { duration: 0.14, ease: 'easeOut' } }}
+                  >
+                    <HeroStatCard icon={item.icon} title={item.title} value={item.desc} />
+                  </motion.div>
+                ))}
+              </div>
             </div>
           </div>
         </motion.section>
