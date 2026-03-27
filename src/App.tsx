@@ -164,7 +164,7 @@ function App() {
 
   return (
     <div className="min-h-screen bg-[var(--bg)] text-[var(--text)] transition-colors duration-300 print:bg-white">
-      <header className="sticky top-0 z-50 border-b border-[color:var(--line)] bg-[color:var(--surface)]/92 print:hidden relative lg:bg-[color:var(--surface)]/82 lg:backdrop-blur-xl">
+      <header className="sticky top-0 z-50 border-b border-[color:var(--line)] bg-[color:var(--surface)] print:hidden relative">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-5 py-4 md:px-8">
           <a href="#hero" className="flex items-center gap-3 text-sm font-semibold tracking-[0.18em] text-[var(--accent)] uppercase">
             <span className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-[color:var(--line)] bg-[color:var(--surface-strong)] text-base tracking-normal">
@@ -237,29 +237,13 @@ function App() {
           className="relative overflow-hidden rounded-[2rem] border border-[color:var(--line)] bg-[linear-gradient(145deg,rgba(255,253,249,0.99)_0%,rgba(248,242,234,0.96)_55%,rgba(239,232,223,0.92)_100%)] shadow-[var(--shadow)] dark:bg-[linear-gradient(145deg,rgba(24,26,25,0.98)_0%,rgba(19,21,20,0.96)_55%,rgba(16,17,16,0.94)_100%)] print:rounded-none print:border print:shadow-none"
         >
           {isMobile ? (
-            <>
-              <div className="absolute -left-20 top-0 h-72 w-72 rounded-full bg-[rgba(164,104,69,0.12)] dark:bg-[rgba(164,104,69,0.06)]" />
-              <div className="absolute right-0 top-8 h-72 w-72 rounded-full bg-[rgba(33,54,44,0.1)] dark:bg-[rgba(219,232,224,0.05)]" />
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.4),transparent_45%)] opacity-70 dark:opacity-10" />
-            </>
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.4),transparent_45%)] opacity-70 dark:opacity-10" />
           ) : (
-            <>
-              <motion.div
-                className="absolute -left-20 top-0 h-72 w-72 rounded-full bg-[rgba(164,104,69,0.16)] blur-3xl dark:bg-[rgba(164,104,69,0.08)]"
-                animate={{ y: [0, 16, 0], scale: [1, 1.04, 1] }}
-                transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut' }}
-              />
-              <motion.div
-                className="absolute right-0 top-8 h-72 w-72 rounded-full bg-[rgba(33,54,44,0.14)] blur-3xl dark:bg-[rgba(219,232,224,0.07)]"
-                animate={{ y: [0, -14, 0], scale: [1, 1.03, 1] }}
-                transition={{ duration: 11, repeat: Infinity, ease: 'easeInOut' }}
-              />
-              <motion.div
-                className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.55),transparent_45%)] opacity-75 dark:opacity-10"
-                animate={{ opacity: [0.72, 0.88, 0.72] }}
-                transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
-              />
-            </>
+            <motion.div
+              className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.55),transparent_45%)] opacity-75 dark:opacity-10"
+              animate={{ opacity: [0.72, 0.88, 0.72] }}
+              transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
+            />
           )}
 
           <div className="relative z-10 grid gap-10 p-8 md:grid-cols-[minmax(0,1fr)_320px] md:p-12 print:grid-cols-1 print:p-8">
