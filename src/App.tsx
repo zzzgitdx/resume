@@ -400,7 +400,26 @@ function App() {
               <div>{t('compare.columns.v1')}</div>
               <div>{t('compare.columns.v2')}</div>
             </div>
-            <div className="divide-y divide-[color:var(--line)]">
+            <div className="min-w-0 px-5 py-5 md:hidden">
+              <p className="mb-3 text-xs font-medium tracking-[0.08em] text-[var(--muted)]">左右滑动查看对比</p>
+              <div className="-mx-1 flex snap-x snap-mandatory gap-4 overflow-x-auto overscroll-x-contain px-1 pb-2 pr-6 touch-pan-x [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden compare-mobile-horizontal-marker">
+                {comparisonRows.map((row, index) => (
+                  <div key={row.dimension} className={`${elevatedCardClass} compare-mobile-static-card-marker flex w-[19.25rem] shrink-0 snap-start flex-col p-5`}>
+                    <div className="mb-4 flex items-center justify-between gap-3">
+                      <h3 className="text-lg font-semibold tracking-[-0.02em] text-[var(--text)]">{row.dimension}</h3>
+                      <div className="inline-flex rounded-full bg-[color:var(--accent-soft)] px-3 py-1 text-[11px] font-semibold tracking-[0.16em] text-[var(--accent)] uppercase">
+                        0{index + 1}
+                      </div>
+                    </div>
+                    <div className="grid gap-3">
+                      <CompareColumn label={t('compare.columns.v1')} value={row.v1} />
+                      <CompareColumn label={t('compare.columns.v2')} value={row.v2} emphasize />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="hidden divide-y divide-[color:var(--line)] md:block">
               {comparisonRows.map((row, index) => (
                 <motion.div
                   key={row.dimension}
