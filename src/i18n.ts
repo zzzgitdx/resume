@@ -24,6 +24,7 @@ const resources = {
           '这份页面不是按时间堆经历，而是按三段真实项目组织：速录 V1.0 负责验证扫码获客与咨询链路，V2.0 与 AI 一起从 0 到 1 拆解、讨论并开发落地更完整的业务系统，代驾平台则对应既有产品中的参与式迭代、体验优化与运营支持。',
         primary: '查看作品',
         secondary: '查看 V1 / V2 对比',
+        tertiary: '查看代驾平台',
         stats: {
           role: '角色定位',
           roleValue: '产品经理',
@@ -210,6 +211,7 @@ const resources = {
           'This page is organized by three real product tracks rather than by timeline: Quick Capture V1.0 validated a QR-based acquisition funnel, V2.0 was decomposed, discussed, and shipped from 0 to 1 together with AI, and the chauffeur platform reflects iterative work inside an existing operational product.',
         primary: 'View Works',
         secondary: 'See V1 / V2 Comparison',
+        tertiary: 'See Chauffeur Project',
         stats: {
           role: 'Role',
           roleValue: 'Product Manager',

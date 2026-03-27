@@ -270,6 +270,9 @@ function App() {
                 <a href="#compare" className="inline-flex items-center gap-2 rounded-full border border-[color:var(--line-strong)] px-5 py-3 text-sm font-medium text-[var(--text)] transition hover:bg-[color:var(--accent-soft)]">
                   {t('hero.secondary')}
                 </a>
+                <a href="#chauffeur" className="inline-flex items-center gap-2 rounded-full border border-[color:var(--line-strong)] px-5 py-3 text-sm font-medium text-[var(--text)] transition hover:bg-[color:var(--accent-soft)]">
+                  {t('hero.tertiary')}
+                </a>
               </motion.div>
             </div>
 
