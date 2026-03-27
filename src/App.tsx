@@ -318,8 +318,11 @@ function App() {
               </motion.div>
             </div>
 
-            <div className="print:hidden">
-              <div className="-mx-1 flex snap-x snap-mandatory gap-3 overflow-x-auto px-1 pb-2 md:hidden">
+            <div className="min-w-0 print:hidden">
+              <p className="mb-3 text-xs font-medium tracking-[0.08em] text-[var(--muted)] md:hidden">
+                左右滑动查看卡片
+              </p>
+              <div className="-mx-1 flex w-full snap-x snap-mandatory gap-3 overflow-x-auto overscroll-x-contain px-1 pb-2 pr-6 touch-pan-x [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:hidden">
                 {heroCards.map((item) => (
                   <div key={item.title} className="w-[17.5rem] shrink-0 snap-start">
                     <HeroStatCard icon={item.icon} title={item.title} value={item.desc} />
