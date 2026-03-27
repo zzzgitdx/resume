@@ -1,5 +1,5 @@
-import { useEffect, useMemo, useState } from 'react'
-import { AnimatePresence, motion } from 'motion/react'
+import { Suspense, lazy, useEffect, useMemo, useState } from 'react'
+import { AnimatePresence, motion, type TargetAndTransition, type Transition, type VariantLabels, type ViewportOptions } from 'motion/react'
 import {
   ArrowDownRight,
   Blocks,
@@ -18,9 +18,8 @@ import {
   UserRound,
   X,
 } from 'lucide-react'
-import ReactMarkdown from 'react-markdown'
 import { useTranslation } from 'react-i18next'
-
+import type { Project } from './portfolio-types'
 type Theme = 'light' | 'dark'
 
 type ComparisonRow = {
@@ -32,22 +31,6 @@ type ComparisonRow = {
 type InfoCard = {
   title: string
   desc: string
-}
-
-type ProjectImage = {
-  src: string
-  alt: string
-}
-
-type Project = {
-  key: string
-  title: string
-  role: string
-  tag: string
-  summary: string
-  body: string
-  detail: string
-  images: ProjectImage[]
 }
 
 const navItems = [
@@ -73,6 +56,7 @@ const sectionHeaderClass = 'px-6 py-7 md:px-8'
 const sectionContentClass = 'border-t border-[color:var(--line)] bg-[color:var(--surface-strong)] px-5 py-5 md:px-6 md:py-6'
 const elevatedCardClass =
   'rounded-[1.55rem] border border-[color:var(--line)] bg-[color:var(--surface-strong)] p-6 shadow-[0_14px_32px_rgba(18,19,18,0.06)] transition duration-150 ease-out dark:shadow-[0_14px_30px_rgba(0,0,0,0.18)] print:shadow-none'
+const ProjectDetailModal = lazy(() => import('./components/ProjectDetailModal'))
 
 function App() {
   const { t, i18n } = useTranslation()
@@ -81,6 +65,10 @@ function App() {
     const stored = window.localStorage.getItem('resume-theme') as Theme | null
     if (stored) return stored
     return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+  })
+  const [isMobile, setIsMobile] = useState(() => {
+    if (typeof window === 'undefined') return false
+    return window.innerWidth < 768
   })
   const [selectedProject, setSelectedProject] = useState<Project | null>(null)
   const [selectedImageIndex, setSelectedImageIndex] = useState(0)
@@ -98,14 +86,16 @@ function App() {
   useEffect(() => {
     if (typeof window === 'undefined') return
 
-    const handleResize = () => {
+    const syncViewport = () => {
+      setIsMobile(window.innerWidth < 768)
       if (window.innerWidth >= 1024) {
         setMobileMenuOpen(false)
       }
     }
 
-    window.addEventListener('resize', handleResize)
-    return () => window.removeEventListener('resize', handleResize)
+    syncViewport()
+    window.addEventListener('resize', syncViewport)
+    return () => window.removeEventListener('resize', syncViewport)
   }, [])
 
   useEffect(() => {
@@ -174,7 +164,7 @@ function App() {
 
   return (
     <div className="min-h-screen bg-[var(--bg)] text-[var(--text)] transition-colors duration-300 print:bg-white">
-      <header className="sticky top-0 z-50 border-b border-[color:var(--line)] bg-[color:var(--surface)]/82 backdrop-blur-xl print:hidden relative">
+      <header className="sticky top-0 z-50 border-b border-[color:var(--line)] bg-[color:var(--surface)]/92 print:hidden relative lg:bg-[color:var(--surface)]/82 lg:backdrop-blur-xl">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-5 py-4 md:px-8">
           <a href="#hero" className="flex items-center gap-3 text-sm font-semibold tracking-[0.18em] text-[var(--accent)] uppercase">
             <span className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-[color:var(--line)] bg-[color:var(--surface-strong)] text-base tracking-normal">
@@ -220,13 +210,7 @@ function App() {
         </div>
         <AnimatePresence>
           {mobileMenuOpen ? (
-            <motion.div
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -8 }}
-              transition={{ duration: 0.18 }}
-              className="absolute inset-x-0 top-full border-t border-[color:var(--line)] bg-[color:var(--surface)]/96 shadow-[0_16px_32px_rgba(18,19,18,0.08)] backdrop-blur-xl lg:hidden dark:shadow-[0_16px_32px_rgba(0,0,0,0.24)]"
-            >
+            <div className="absolute inset-x-0 top-full border-t border-[color:var(--line)] bg-[color:var(--surface)] shadow-[0_16px_32px_rgba(18,19,18,0.08)] lg:hidden dark:shadow-[0_16px_32px_rgba(0,0,0,0.24)]">
               <nav className="mx-auto flex max-w-7xl flex-col gap-1 px-5 py-3 md:px-8">
                 {navItems.map((item) => (
                   <a
@@ -239,7 +223,7 @@ function App() {
                   </a>
                 ))}
               </nav>
-            </motion.div>
+            </div>
           ) : null}
         </AnimatePresence>
       </header>
@@ -247,26 +231,36 @@ function App() {
       <main className="mx-auto flex max-w-7xl flex-col gap-6 px-5 py-6 md:px-8 md:py-8 print:max-w-none print:gap-4 print:px-0 print:py-0">
         <motion.section
           id="hero"
-          initial={{ opacity: 0, y: 28 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.55 }}
+          initial={isMobile ? false : { opacity: 0, y: 28 }}
+          animate={isMobile ? undefined : { opacity: 1, y: 0 }}
+          transition={isMobile ? undefined : { duration: 0.55 }}
           className="relative overflow-hidden rounded-[2rem] border border-[color:var(--line)] bg-[linear-gradient(145deg,rgba(255,253,249,0.99)_0%,rgba(248,242,234,0.96)_55%,rgba(239,232,223,0.92)_100%)] shadow-[var(--shadow)] dark:bg-[linear-gradient(145deg,rgba(24,26,25,0.98)_0%,rgba(19,21,20,0.96)_55%,rgba(16,17,16,0.94)_100%)] print:rounded-none print:border print:shadow-none"
         >
-          <motion.div
-            className="absolute -left-20 top-0 h-72 w-72 rounded-full bg-[rgba(164,104,69,0.16)] blur-3xl dark:bg-[rgba(164,104,69,0.08)]"
-            animate={{ y: [0, 16, 0], scale: [1, 1.04, 1] }}
-            transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut' }}
-          />
-          <motion.div
-            className="absolute right-0 top-8 h-72 w-72 rounded-full bg-[rgba(33,54,44,0.14)] blur-3xl dark:bg-[rgba(219,232,224,0.07)]"
-            animate={{ y: [0, -14, 0], scale: [1, 1.03, 1] }}
-            transition={{ duration: 11, repeat: Infinity, ease: 'easeInOut' }}
-          />
-          <motion.div
-            className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.55),transparent_45%)] opacity-75 dark:opacity-10"
-            animate={{ opacity: [0.72, 0.88, 0.72] }}
-            transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
-          />
+          {isMobile ? (
+            <>
+              <div className="absolute -left-20 top-0 h-72 w-72 rounded-full bg-[rgba(164,104,69,0.12)] dark:bg-[rgba(164,104,69,0.06)]" />
+              <div className="absolute right-0 top-8 h-72 w-72 rounded-full bg-[rgba(33,54,44,0.1)] dark:bg-[rgba(219,232,224,0.05)]" />
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.4),transparent_45%)] opacity-70 dark:opacity-10" />
+            </>
+          ) : (
+            <>
+              <motion.div
+                className="absolute -left-20 top-0 h-72 w-72 rounded-full bg-[rgba(164,104,69,0.16)] blur-3xl dark:bg-[rgba(164,104,69,0.08)]"
+                animate={{ y: [0, 16, 0], scale: [1, 1.04, 1] }}
+                transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut' }}
+              />
+              <motion.div
+                className="absolute right-0 top-8 h-72 w-72 rounded-full bg-[rgba(33,54,44,0.14)] blur-3xl dark:bg-[rgba(219,232,224,0.07)]"
+                animate={{ y: [0, -14, 0], scale: [1, 1.03, 1] }}
+                transition={{ duration: 11, repeat: Infinity, ease: 'easeInOut' }}
+              />
+              <motion.div
+                className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.55),transparent_45%)] opacity-75 dark:opacity-10"
+                animate={{ opacity: [0.72, 0.88, 0.72] }}
+                transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
+              />
+            </>
+          )}
 
           <div className="relative z-10 grid gap-10 p-8 md:grid-cols-[minmax(0,1fr)_320px] md:p-12 print:grid-cols-1 print:p-8">
             <div>
@@ -299,12 +293,7 @@ function App() {
                 ))}
               </div>
 
-              <motion.div
-                className="mt-8 flex flex-wrap gap-3 print:hidden"
-                initial={{ opacity: 0, y: 18 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.35, duration: 0.45 }}
-              >
+              <div className="mt-8 flex flex-wrap gap-3 print:hidden">
                 <a href="#works" className="inline-flex items-center gap-2 rounded-full bg-[var(--accent)] px-5 py-3 text-sm font-medium text-white shadow-sm transition hover:translate-y-[-1px] dark:bg-[#f6f0e8] dark:text-[#15231c] dark:hover:bg-white">
                   {t('hero.primary')}
                   <ArrowDownRight className="h-4 w-4" />
@@ -315,7 +304,7 @@ function App() {
                 <a href="#chauffeur" className="inline-flex items-center gap-2 rounded-full border border-[color:var(--line-strong)] px-5 py-3 text-sm font-medium text-[var(--text)] transition hover:bg-[color:var(--accent-soft)]">
                   {t('hero.tertiary')}
                 </a>
-              </motion.div>
+              </div>
             </div>
 
             <div className="min-w-0 print:hidden">
@@ -454,7 +443,8 @@ function App() {
 
           <div className={sectionContentClass}>
             <div className="grid gap-5 xl:grid-cols-[1.12fr_0.88fr]">
-              <motion.article
+              <ResponsiveMotionArticle
+                mobile={isMobile}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.3 }}
@@ -486,25 +476,26 @@ function App() {
                     <ArrowDownRight className="h-4 w-4" />
                   </button>
                 ) : null}
-              </motion.article>
+              </ResponsiveMotionArticle>
 
               <div className="grid gap-5">
                 {chauffeurCards.map((card, index) => (
-                  <motion.div
+                  <ResponsiveMotionDiv
                     key={card.title}
+                    mobile={isMobile}
                     initial={{ opacity: 0, y: 18 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true, amount: 0.35 }}
                     transition={{ delay: index * 0.06, duration: 0.36 }}
                     whileHover={{ y: -4, scale: 1.01, transition: { duration: 0.16, ease: 'easeOut' } }}
-                    className={`${elevatedCardClass} hover:border-[color:var(--line-strong)]`}
+                    className={`${elevatedCardClass} md:hover:border-[color:var(--line-strong)]`}
                   >
                     <div className="flex items-center gap-3 text-[var(--accent)]">
                       {chauffeurIcons[index]}
                       <span className="text-[12px] font-semibold tracking-[0.16em] uppercase text-[var(--accent)]">{card.title}</span>
                     </div>
                     <p className="mt-3 text-sm leading-7 text-[var(--muted)] md:text-base md:leading-8">{card.desc}</p>
-                  </motion.div>
+                  </ResponsiveMotionDiv>
                 ))}
               </div>
             </div>
@@ -523,21 +514,22 @@ function App() {
           <div className={sectionContentClass}>
             <div className="grid gap-5 md:grid-cols-3 print:grid-cols-3">
               {aiCards.map((card, index) => (
-                <motion.div
+                <ResponsiveMotionDiv
                   key={card.title}
+                  mobile={isMobile}
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, amount: 0.35 }}
                   transition={{ delay: index * 0.07, duration: 0.4 }}
                   whileHover={{ y: -5, scale: 1.01, transition: { duration: 0.16, ease: 'easeOut' } }}
-                  className={`${elevatedCardClass} hover:border-[color:var(--line-strong)]`}
+                  className={`${elevatedCardClass} md:hover:border-[color:var(--line-strong)]`}
                 >
                   <div className="mb-4 inline-flex rounded-full bg-[color:var(--accent-soft)] p-3 text-[var(--accent)]">
                     {aiIcons[index]}
                   </div>
                   <h3 className="text-xl font-semibold tracking-[-0.04em] print:text-base">{card.title}</h3>
                   <p className="mt-3 text-sm leading-7 text-[var(--muted)] print:text-xs print:leading-6">{card.desc}</p>
-                </motion.div>
+                </ResponsiveMotionDiv>
               ))}
             </div>
           </div>
@@ -554,7 +546,8 @@ function App() {
 
           <div className={sectionContentClass}>
             <div className="grid gap-5 xl:grid-cols-[0.92fr_1.28fr]">
-              <motion.div
+              <ResponsiveMotionDiv
+                mobile={isMobile}
                 initial={{ opacity: 0, y: 18 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.35 }}
@@ -573,7 +566,7 @@ function App() {
                   <QuickChip icon={<WeChatIcon className="h-4 w-4" />} label="zzzsrzsepsnd" />
                   <QuickChip icon={<Mail className="h-4 w-4" />} label="1278511339@qq.com" />
                 </div>
-              </motion.div>
+              </ResponsiveMotionDiv>
 
               <div className="grid gap-4 md:grid-cols-2">
                 {[
@@ -583,17 +576,18 @@ function App() {
                   { icon: <UserRound className="h-5 w-5" />, label: t('contact.name'), value: t('profile.name') },
                   { icon: <MapPin className="h-5 w-5" />, label: t('contact.location'), value: t('contact.locationValue') },
                 ].map((item, index) => (
-                  <motion.div
+                  <ResponsiveMotionDiv
                     key={`${item.label}-${item.value}`}
+                    mobile={isMobile}
                     initial={{ opacity: 0, y: 18 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true, amount: 0.3 }}
                     transition={{ delay: index * 0.05, duration: 0.35 }}
                     whileHover={{ y: -4, scale: 1.01, transition: { duration: 0.16, ease: 'easeOut' } }}
-                    className={item.className}
+                    className={item.className ?? ''}
                   >
                     <ContactCard icon={item.icon} label={item.label} value={item.value} />
-                  </motion.div>
+                  </ResponsiveMotionDiv>
                 ))}
               </div>
             </div>
@@ -601,82 +595,22 @@ function App() {
         </section>
       </main>
 
-      <AnimatePresence>
-        {selectedProject ? (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[60] overflow-y-auto bg-black/45 px-4 py-6 backdrop-blur-sm print:hidden"
-            onClick={() => setSelectedProject(null)}
-          >
-            <motion.div
-              initial={{ opacity: 0, y: 24, scale: 0.98 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: 18, scale: 0.98 }}
-              transition={{ duration: 0.24 }}
-              onClick={(event) => event.stopPropagation()}
-              className="mx-auto flex max-h-[calc(100vh-3rem)] min-h-[min(720px,calc(100vh-3rem))] max-w-4xl flex-col overflow-hidden rounded-[2rem] border border-white/15 bg-[color:var(--surface-strong)] shadow-2xl"
-            >
-              <div className="flex items-start justify-between gap-4 border-b border-[color:var(--line)] px-6 py-5 md:px-8">
-                <div>
-                  <span className="inline-flex rounded-full bg-[color:var(--accent-soft)] px-3 py-1 text-xs font-semibold tracking-[0.16em] text-[var(--accent)] uppercase">
-                    {selectedProject.tag}
-                  </span>
-                  <h3 className="mt-4 text-3xl font-semibold tracking-[-0.05em]">{selectedProject.title}</h3>
-                  <p className="mt-2 text-sm text-[var(--warm)]">{selectedProject.role}</p>
-                </div>
-                <button
-                  type="button"
-                  onClick={() => setSelectedProject(null)}
-                  className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[color:var(--line)] text-[var(--muted)] transition hover:bg-[color:var(--accent-soft)] hover:text-[var(--text)]"
-                >
-                  <X className="h-5 w-5" />
-                </button>
-              </div>
-
-              <div className="min-h-0 overflow-y-auto">
-                {selectedProject.images.length ? (
-                  <div className="border-b border-[color:var(--line)] px-6 py-5 md:px-8">
-                    <div className="overflow-hidden rounded-[1.5rem] border border-[color:var(--line)] bg-[color:var(--surface)]">
-                      <img src={selectedProject.images[selectedImageIndex].src} alt={selectedProject.images[selectedImageIndex].alt} className="h-[260px] w-full object-cover md:h-[320px]" />
-                    </div>
-                    <div className="mt-4 flex gap-3 overflow-x-auto pb-1">
-                      {selectedProject.images.map((image, index) => (
-                        <button
-                          key={image.src}
-                          type="button"
-                          onClick={() => setSelectedImageIndex(index)}
-                          className={`overflow-hidden rounded-[1rem] border transition ${
-                            selectedImageIndex === index
-                              ? 'border-[color:var(--line-strong)] shadow-[0_10px_20px_rgba(18,19,18,0.12)]'
-                              : 'border-[color:var(--line)] opacity-80 hover:opacity-100'
-                          }`}
-                        >
-                          <img src={image.src} alt={image.alt} className="h-20 w-28 object-cover md:h-24 md:w-36" />
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                ) : null}
-
-                <div className="px-6 py-6 md:px-8 md:py-8">
-                <div className="prose prose-neutral max-w-none text-[15px] leading-8 prose-headings:text-[var(--text)] prose-headings:tracking-[-0.03em] prose-p:text-[var(--muted)] prose-li:text-[var(--muted)] dark:prose-invert">
-                  <DetailMarkdown>{selectedProject.detail}</DetailMarkdown>
-                </div>
-              </div>
-              </div>
-            </motion.div>
-          </motion.div>
-        ) : null}
-      </AnimatePresence>
+      <Suspense fallback={selectedProject ? <div className="fixed inset-0 z-[60] bg-black/35 print:hidden" /> : null}>
+        <ProjectDetailModal
+          isMobile={isMobile}
+          project={selectedProject}
+          selectedImageIndex={selectedImageIndex}
+          onSelectImage={setSelectedImageIndex}
+          onClose={() => setSelectedProject(null)}
+        />
+      </Suspense>
     </div>
   )
 }
 
 function QuickChip({ icon, label }: { icon: React.ReactNode; label: string }) {
   return (
-    <div className="inline-flex items-center gap-2 rounded-full border border-[color:var(--line)] bg-[color:var(--surface)]/72 px-4 py-2 text-sm text-[var(--muted)] backdrop-blur-sm transition duration-150 ease-out hover:border-[color:var(--line-strong)] hover:bg-[color:var(--surface)]">
+    <div className="inline-flex items-center gap-2 rounded-full border border-[color:var(--line)] bg-[color:var(--surface)]/72 px-4 py-2 text-sm text-[var(--muted)] transition duration-150 ease-out hover:border-[color:var(--line-strong)] hover:bg-[color:var(--surface)] md:backdrop-blur-sm">
       <span className="text-[var(--accent)]">{icon}</span>
       <span>{label}</span>
     </div>
@@ -698,13 +632,87 @@ function WeChatIcon({ className = '' }: { className?: string }) {
 
 function HeroStatCard({ icon, title, value }: { icon: React.ReactNode; title: string; value: string }) {
   return (
-    <div className="flex flex-col rounded-[1.35rem] border border-[color:var(--line)] bg-[color:var(--surface)]/88 p-4 backdrop-blur-sm transition-all duration-100 ease-out hover:border-[color:var(--line-strong)] hover:bg-[color:var(--surface)] hover:shadow-[0_18px_36px_rgba(18,19,18,0.08)] dark:hover:shadow-[0_18px_36px_rgba(0,0,0,0.22)]">
+    <div className="flex flex-col rounded-[1.35rem] border border-[color:var(--line)] bg-[color:var(--surface)]/88 p-4 transition-all duration-100 ease-out md:backdrop-blur-sm md:hover:border-[color:var(--line-strong)] md:hover:bg-[color:var(--surface)] md:hover:shadow-[0_18px_36px_rgba(18,19,18,0.08)] dark:md:hover:shadow-[0_18px_36px_rgba(0,0,0,0.22)]">
       <div className="flex items-center gap-3 text-[var(--accent)]">
         {icon}
         <span className="text-[0.98rem] font-semibold tracking-[0.02em] text-[var(--accent)]">{title}</span>
       </div>
       <p className="mt-4 text-[0.84rem] leading-6 text-[var(--muted)] md:text-[0.86rem]">{value}</p>
     </div>
+  )
+}
+
+function ResponsiveMotionDiv({
+  mobile,
+  children,
+  className,
+  initial,
+  whileInView,
+  transition,
+  viewport,
+  whileHover,
+}: {
+  mobile: boolean
+  children: React.ReactNode
+  className: string
+  initial?: boolean | TargetAndTransition | VariantLabels
+  whileInView?: TargetAndTransition | VariantLabels
+  transition?: Transition
+  viewport?: ViewportOptions
+  whileHover?: TargetAndTransition | VariantLabels
+}) {
+  if (mobile) {
+    return <div className={className}>{children}</div>
+  }
+
+  return (
+    <motion.div
+      className={className}
+      initial={initial}
+      whileInView={whileInView}
+      transition={transition}
+      viewport={viewport}
+      whileHover={whileHover}
+    >
+      {children}
+    </motion.div>
+  )
+}
+
+function ResponsiveMotionArticle({
+  mobile,
+  children,
+  className,
+  initial,
+  whileInView,
+  transition,
+  viewport,
+  whileHover,
+}: {
+  mobile: boolean
+  children: React.ReactNode
+  className: string
+  initial?: boolean | TargetAndTransition | VariantLabels
+  whileInView?: TargetAndTransition | VariantLabels
+  transition?: Transition
+  viewport?: ViewportOptions
+  whileHover?: TargetAndTransition | VariantLabels
+}) {
+  if (mobile) {
+    return <article className={className}>{children}</article>
+  }
+
+  return (
+    <motion.article
+      className={className}
+      initial={initial}
+      whileInView={whileInView}
+      transition={transition}
+      viewport={viewport}
+      whileHover={whileHover}
+    >
+      {children}
+    </motion.article>
   )
 }
 
@@ -718,26 +726,40 @@ function CompareColumn({ label, value, emphasize = false }: { label: string; val
 }
 
 function SummaryMarkdown({ children }: { children: string }) {
+  const blocks = parseSummaryMarkdown(children)
+
   return (
     <div className="space-y-3 text-sm leading-7 text-[var(--muted)]">
-      <ReactMarkdown
-        components={{
-          h3: ({ children }) => (
-            <h4 className="mt-5 border-t border-[color:var(--line)] pt-4 text-[11px] font-semibold tracking-[0.18em] text-[var(--accent)] uppercase">
-              {children}
+      {blocks.map((block, index) => {
+        if (block.type === 'heading') {
+          return (
+            <h4 key={`${block.type}-${index}`} className="mt-5 border-t border-[color:var(--line)] pt-4 text-[11px] font-semibold tracking-[0.18em] text-[var(--accent)] uppercase">
+              {block.text}
             </h4>
-          ),
-          p: ({ children }) => <p className="text-sm leading-7 text-[var(--muted)]">{children}</p>,
-          ul: ({ children }) => <ul className="space-y-2">{children}</ul>,
-          li: ({ children }) => (
-            <li className="flex gap-2 leading-7 text-[var(--muted)] before:mt-[11px] before:h-1.5 before:w-1.5 before:rounded-full before:bg-[var(--accent)] before:content-['']">
-              <span>{children}</span>
-            </li>
-          ),
-        }}
-      >
-        {children}
-      </ReactMarkdown>
+          )
+        }
+
+        if (block.type === 'list') {
+          return (
+            <ul key={`${block.type}-${index}`} className="space-y-2">
+              {block.items.map((item) => (
+                <li
+                  key={item}
+                  className="flex gap-2 leading-7 text-[var(--muted)] before:mt-[11px] before:h-1.5 before:w-1.5 before:rounded-full before:bg-[var(--accent)] before:content-['']"
+                >
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          )
+        }
+
+        return (
+          <p key={`${block.type}-${index}`} className="text-sm leading-7 text-[var(--muted)]">
+            {block.text}
+          </p>
+        )
+      })}
     </div>
   )
 }
@@ -781,30 +803,6 @@ function ProjectCardContent({
   )
 }
 
-function DetailMarkdown({ children }: { children: string }) {
-  return (
-    <ReactMarkdown
-      components={{
-        h2: ({ children }) => (
-          <h2 className="mt-8 border-t border-[color:var(--line)] pt-5 text-[0.95rem] font-semibold tracking-[0.16em] text-[var(--accent)] uppercase first:mt-0 first:border-0 first:pt-0">
-            {children}
-          </h2>
-        ),
-        h3: ({ children }) => <h3 className="mt-6 text-lg font-semibold tracking-[-0.02em] text-[var(--text)]">{children}</h3>,
-        p: ({ children }) => <p className="text-[15px] leading-8 text-[var(--muted)]">{children}</p>,
-        ul: ({ children }) => <ul className="space-y-3">{children}</ul>,
-        li: ({ children }) => (
-          <li className="flex gap-3 leading-8 text-[var(--muted)] before:mt-[12px] before:h-1.5 before:w-1.5 before:rounded-full before:bg-[var(--accent)] before:content-['']">
-            <span>{children}</span>
-          </li>
-        ),
-      }}
-    >
-      {children}
-    </ReactMarkdown>
-  )
-}
-
 function ContactCard({ icon, label, value }: { icon: React.ReactNode; label: string; value: string }) {
   return (
     <div className={elevatedCardClass}>
@@ -815,6 +813,44 @@ function ContactCard({ icon, label, value }: { icon: React.ReactNode; label: str
       <p className="mt-5 break-all text-base font-medium text-[var(--text)] print:text-sm">{value}</p>
     </div>
   )
+}
+
+function parseSummaryMarkdown(markdown: string) {
+  const blocks: Array<{ type: 'heading'; text: string } | { type: 'paragraph'; text: string } | { type: 'list'; items: string[] }> = []
+  const lines = markdown.split(/\r?\n/)
+  let currentList: string[] = []
+
+  const flushList = () => {
+    if (currentList.length) {
+      blocks.push({ type: 'list', items: currentList })
+      currentList = []
+    }
+  }
+
+  for (const rawLine of lines) {
+    const line = rawLine.trim()
+    if (!line) {
+      flushList()
+      continue
+    }
+
+    if (line.startsWith('### ')) {
+      flushList()
+      blocks.push({ type: 'heading', text: line.slice(4).trim() })
+      continue
+    }
+
+    if (line.startsWith('- ')) {
+      currentList.push(line.slice(2).trim())
+      continue
+    }
+
+    flushList()
+    blocks.push({ type: 'paragraph', text: line })
+  }
+
+  flushList()
+  return blocks
 }
 
 export default App

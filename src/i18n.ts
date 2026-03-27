@@ -61,7 +61,7 @@ const resources = {
       },
       compare: {
         kicker: 'Version Evolution',
-        title: 'V1 与 V2 的升级关系',
+        title: 'V1 与 V2 升级关系',
         intro: 'V1 的价值在于快速验证获客链路，V2 的价值在于把链路做细、做稳、做成可治理的产品系统。',
         columns: {
           dimension: '维度',
