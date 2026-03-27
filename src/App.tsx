@@ -12,6 +12,7 @@ import {
   Mail,
   MapPin,
   MoonStar,
+  Menu,
   Phone,
   SunMedium,
   UserRound,
@@ -83,6 +84,7 @@ function App() {
   })
   const [selectedProject, setSelectedProject] = useState<Project | null>(null)
   const [selectedImageIndex, setSelectedImageIndex] = useState(0)
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   useEffect(() => {
     document.documentElement.classList.toggle('dark', theme === 'dark')
@@ -92,6 +94,19 @@ function App() {
   useEffect(() => {
     document.title = t('profile.brand')
   }, [i18n.language, t])
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+
+    const handleResize = () => {
+      if (window.innerWidth >= 1024) {
+        setMobileMenuOpen(false)
+      }
+    }
+
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
 
   useEffect(() => {
     document.body.style.overflow = selectedProject ? 'hidden' : ''
@@ -159,13 +174,13 @@ function App() {
 
   return (
     <div className="min-h-screen bg-[var(--bg)] text-[var(--text)] transition-colors duration-300 print:bg-white">
-      <header className="sticky top-0 z-50 border-b border-[color:var(--line)] bg-[color:var(--surface)]/82 backdrop-blur-xl print:hidden">
+      <header className="sticky top-0 z-50 border-b border-[color:var(--line)] bg-[color:var(--surface)]/82 backdrop-blur-xl print:hidden relative">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-5 py-4 md:px-8">
           <a href="#hero" className="flex items-center gap-3 text-sm font-semibold tracking-[0.18em] text-[var(--accent)] uppercase">
             <span className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-[color:var(--line)] bg-[color:var(--surface-strong)] text-base tracking-normal">
               张
             </span>
-            <span>{t('profile.brand')}</span>
+            <span className="hidden lg:inline">{t('profile.brand')}</span>
           </a>
           <nav className="hidden items-center gap-6 lg:flex">
             {navItems.map((item) => (
@@ -179,9 +194,10 @@ function App() {
               type="button"
               onClick={() => i18n.changeLanguage(i18n.language === 'zh' ? 'en' : 'zh')}
               className="inline-flex items-center gap-2 rounded-full border border-[color:var(--line)] px-3 py-2 text-sm text-[var(--muted)] transition hover:border-[color:var(--line-strong)] hover:text-[var(--text)]"
+              aria-label={t('labels.switchLanguage')}
             >
               <Languages className="h-4 w-4" />
-              {t('labels.switchLanguage')}
+              <span className="hidden lg:inline">{t('labels.switchLanguage')}</span>
             </button>
             <button
               type="button"
@@ -190,10 +206,42 @@ function App() {
               aria-label="toggle theme"
             >
               {theme === 'light' ? <MoonStar className="h-4 w-4" /> : <SunMedium className="h-4 w-4" />}
-              {theme === 'light' ? t('labels.dark') : t('labels.light')}
+              <span className="hidden lg:inline">{theme === 'light' ? t('labels.dark') : t('labels.light')}</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => setMobileMenuOpen((current) => !current)}
+              className="inline-flex items-center justify-center rounded-full border border-[color:var(--line)] p-2 text-[var(--muted)] transition hover:border-[color:var(--line-strong)] hover:text-[var(--text)] lg:hidden"
+              aria-label={mobileMenuOpen ? t('labels.closeMenu') : t('labels.openMenu')}
+            >
+              {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
             </button>
           </div>
         </div>
+        <AnimatePresence>
+          {mobileMenuOpen ? (
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.18 }}
+              className="absolute inset-x-0 top-full border-t border-[color:var(--line)] bg-[color:var(--surface)]/96 shadow-[0_16px_32px_rgba(18,19,18,0.08)] backdrop-blur-xl lg:hidden dark:shadow-[0_16px_32px_rgba(0,0,0,0.24)]"
+            >
+              <nav className="mx-auto flex max-w-7xl flex-col gap-1 px-5 py-3 md:px-8">
+                {navItems.map((item) => (
+                  <a
+                    key={item.id}
+                    href={`#${item.id}`}
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="rounded-2xl px-4 py-3 text-sm font-medium text-[var(--muted)] transition hover:bg-[color:var(--accent-soft)] hover:text-[var(--text)]"
+                  >
+                    {t(`nav.${item.key}`)}
+                  </a>
+                ))}
+              </nav>
+            </motion.div>
+          ) : null}
+        </AnimatePresence>
       </header>
 
       <main className="mx-auto flex max-w-7xl flex-col gap-6 px-5 py-6 md:px-8 md:py-8 print:max-w-none print:gap-4 print:px-0 print:py-0">
@@ -244,16 +292,10 @@ function App() {
                   { icon: <WeChatIcon className="h-4 w-4" />, label: 'zzzsrzsepsnd' },
                   { icon: <Mail className="h-4 w-4" />, label: '1278511339@qq.com' },
                   { icon: <MapPin className="h-4 w-4" />, label: t('contact.locationValue') },
-                ].map((item, index) => (
-                  <motion.div
-                    key={item.label}
-                    initial={{ opacity: 0, y: 16 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.22 + index * 0.05, duration: 0.42 }}
-                    whileHover={{ y: -3, scale: 1.01, transition: { duration: 0.16, ease: 'easeOut' } }}
-                  >
+                ].map((item) => (
+                  <div key={item.label}>
                     <QuickChip icon={item.icon} label={item.label} />
-                  </motion.div>
+                  </div>
                 ))}
               </div>
 
@@ -296,7 +338,7 @@ function App() {
           <div className={sectionHeaderClass}>
             <p className="text-xs font-semibold tracking-[0.24em] text-[var(--accent)] uppercase">{t('works.kicker')}</p>
             <div className="mt-3 space-y-4">
-              <h2 className="font-serif text-[2.4rem] tracking-[-0.05em] whitespace-nowrap md:text-[3.1rem] print:text-2xl">{t('works.title')}</h2>
+              <h2 className="font-serif text-[2.4rem] tracking-[-0.05em] md:whitespace-nowrap md:text-[3.1rem] print:text-2xl">{t('works.title')}</h2>
               <p className="max-w-4xl text-sm leading-7 text-[var(--muted)] md:text-base print:text-xs print:leading-6">{t('works.intro')}</p>
             </div>
           </div>
@@ -344,7 +386,7 @@ function App() {
           <div className={sectionHeaderClass}>
             <p className="text-xs font-semibold tracking-[0.24em] text-[var(--accent)] uppercase">{t('compare.kicker')}</p>
             <div className="mt-3 space-y-4">
-              <h2 className="font-serif text-[2.4rem] tracking-[-0.05em] whitespace-nowrap md:text-[3.1rem] print:text-2xl">{t('compare.title')}</h2>
+              <h2 className="font-serif text-[2.4rem] tracking-[-0.05em] md:whitespace-nowrap md:text-[3.1rem] print:text-2xl">{t('compare.title')}</h2>
               <p className="max-w-4xl text-sm leading-7 text-[var(--muted)] md:text-base print:text-xs print:leading-6">{t('compare.intro')}</p>
             </div>
           </div>
@@ -383,7 +425,7 @@ function App() {
           <div className={sectionHeaderClass}>
             <p className="text-xs font-semibold tracking-[0.24em] text-[var(--accent)] uppercase">{t('chauffeur.kicker')}</p>
             <div className="mt-3 space-y-4">
-              <h2 className="font-serif text-[2.4rem] tracking-[-0.05em] whitespace-nowrap md:text-[3.1rem] print:text-2xl">{t('chauffeur.title')}</h2>
+              <h2 className="font-serif text-[2.4rem] tracking-[-0.05em] md:whitespace-nowrap md:text-[3.1rem] print:text-2xl">{t('chauffeur.title')}</h2>
               <p className="max-w-4xl text-sm leading-7 text-[var(--muted)] md:text-base print:text-xs print:leading-6">{t('chauffeur.intro')}</p>
             </div>
           </div>
@@ -451,7 +493,7 @@ function App() {
           <div className={sectionHeaderClass}>
             <p className="text-xs font-semibold tracking-[0.24em] text-[var(--accent)] uppercase">{t('ai.kicker')}</p>
             <div className="mt-3 space-y-4">
-              <h2 className="font-serif text-[2.4rem] tracking-[-0.05em] whitespace-nowrap md:text-[3.1rem] print:text-2xl">{t('ai.title')}</h2>
+              <h2 className="font-serif text-[2.4rem] tracking-[-0.05em] md:whitespace-nowrap md:text-[3.1rem] print:text-2xl">{t('ai.title')}</h2>
               <p className="max-w-4xl text-sm leading-7 text-[var(--muted)] md:text-base print:text-xs print:leading-6">{t('ai.intro')}</p>
             </div>
           </div>
@@ -483,7 +525,7 @@ function App() {
           <div className={sectionHeaderClass}>
             <p className="text-xs font-semibold tracking-[0.24em] text-[var(--accent)] uppercase">{t('contact.kicker')}</p>
             <div className="mt-3 space-y-4">
-              <h2 className="font-serif text-[2.4rem] tracking-[-0.05em] whitespace-nowrap md:text-[3.1rem] print:text-2xl">{t('contact.title')}</h2>
+              <h2 className="font-serif text-[2.4rem] tracking-[-0.05em] md:whitespace-nowrap md:text-[3.1rem] print:text-2xl">{t('contact.title')}</h2>
               <p className="max-w-4xl text-sm leading-7 text-[var(--muted)] md:text-base print:text-xs print:leading-6">{t('contact.intro')}</p>
             </div>
           </div>
