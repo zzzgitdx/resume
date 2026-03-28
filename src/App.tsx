@@ -164,7 +164,7 @@ function App() {
 
   return (
     <div className="min-h-screen bg-[var(--bg)] text-[var(--text)] transition-colors duration-300 print:bg-white">
-      <header className="sticky top-0 z-50 border-b border-[color:var(--line)] bg-[color:var(--surface)] print:hidden relative">
+      <header className="sticky top-0 z-50 border-b border-[color:var(--line)] bg-[color:var(--surface-strong)] md:bg-[color:var(--surface)] print:hidden relative">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-5 py-4 md:px-8">
           <a href="#hero" className="flex items-center gap-3 text-sm font-semibold tracking-[0.18em] text-[var(--accent)] uppercase">
             <span className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-[color:var(--line)] bg-[color:var(--surface-strong)] text-base tracking-normal">
@@ -210,7 +210,7 @@ function App() {
         </div>
         <AnimatePresence>
           {mobileMenuOpen ? (
-            <div className="absolute inset-x-0 top-full border-t border-[color:var(--line)] bg-[color:var(--surface)] shadow-[0_16px_32px_rgba(18,19,18,0.08)] lg:hidden dark:shadow-[0_16px_32px_rgba(0,0,0,0.24)]">
+            <div className="absolute inset-x-0 top-full border-t border-[color:var(--line)] bg-[color:var(--surface-strong)] shadow-[0_16px_32px_rgba(18,19,18,0.08)] lg:hidden dark:shadow-[0_16px_32px_rgba(0,0,0,0.24)]">
               <nav className="mx-auto flex max-w-7xl flex-col gap-1 px-5 py-3 md:px-8">
                 {navItems.map((item) => (
                   <a
