@@ -709,45 +709,6 @@ function CompareColumn({ label, value, emphasize = false }: { label: string; val
   )
 }
 
-function SummaryMarkdown({ children }: { children: string }) {
-  const blocks = parseSummaryMarkdown(children)
-
-  return (
-    <div className="space-y-3 text-sm leading-7 text-[var(--muted)]">
-      {blocks.map((block, index) => {
-        if (block.type === 'heading') {
-          return (
-            <h4 key={`${block.type}-${index}`} className="mt-5 border-t border-[color:var(--line)] pt-4 text-[11px] font-semibold tracking-[0.18em] text-[var(--accent)] uppercase">
-              {block.text}
-            </h4>
-          )
-        }
-
-        if (block.type === 'list') {
-          return (
-            <ul key={`${block.type}-${index}`} className="space-y-2">
-              {block.items.map((item) => (
-                <li
-                  key={item}
-                  className="flex gap-2 leading-7 text-[var(--muted)] before:mt-[11px] before:h-1.5 before:w-1.5 before:rounded-full before:bg-[var(--accent)] before:content-['']"
-                >
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
-          )
-        }
-
-        return (
-          <p key={`${block.type}-${index}`} className="text-sm leading-7 text-[var(--muted)]">
-            {block.text}
-          </p>
-        )
-      })}
-    </div>
-  )
-}
-
 function ProjectCardContent({
   project,
   index,
@@ -759,9 +720,16 @@ function ProjectCardContent({
   onOpen: (project: Project) => void
   ctaLabel: string
 }) {
+  const cover = project.images[0]
+
   return (
     <>
-      <div className="mb-5 flex items-start justify-between gap-4">
+      {cover ? (
+        <div className="mb-5 overflow-hidden rounded-[1.2rem] border border-[color:var(--line)] bg-[color:var(--surface-strong)]">
+          <img src={cover.src} alt={cover.alt} className="h-44 w-full object-cover md:h-48" />
+        </div>
+      ) : null}
+      <div className="mb-4 flex items-start justify-between gap-4">
         <div>
           <span className="inline-flex rounded-full bg-[color:var(--accent-soft)] px-3 py-1 text-xs font-semibold tracking-[0.16em] text-[var(--accent)] uppercase">
             {project.tag}
@@ -771,10 +739,7 @@ function ProjectCardContent({
         <span className="text-sm text-[var(--muted)]">0{index + 1}</span>
       </div>
       <p className="mb-4 text-sm text-[var(--warm)]">{project.role}</p>
-      <p className="mb-5 text-sm leading-7 text-[var(--muted)]">{project.summary}</p>
-      <div className="prose prose-neutral max-w-none flex-1 text-sm leading-7 prose-headings:mb-2 prose-headings:mt-4 prose-headings:text-base prose-headings:font-semibold prose-headings:text-[var(--text)] prose-p:text-[var(--muted)] prose-li:text-[var(--muted)] dark:prose-invert">
-        <SummaryMarkdown>{project.body}</SummaryMarkdown>
-      </div>
+      <p className="text-sm leading-7 text-[var(--muted)]">{project.summary}</p>
       <button
         type="button"
         onClick={() => onOpen(project)}
@@ -799,42 +764,6 @@ function ContactCard({ icon, label, value }: { icon: React.ReactNode; label: str
   )
 }
 
-function parseSummaryMarkdown(markdown: string) {
-  const blocks: Array<{ type: 'heading'; text: string } | { type: 'paragraph'; text: string } | { type: 'list'; items: string[] }> = []
-  const lines = markdown.split(/\r?\n/)
-  let currentList: string[] = []
 
-  const flushList = () => {
-    if (currentList.length) {
-      blocks.push({ type: 'list', items: currentList })
-      currentList = []
-    }
-  }
-
-  for (const rawLine of lines) {
-    const line = rawLine.trim()
-    if (!line) {
-      flushList()
-      continue
-    }
-
-    if (line.startsWith('### ')) {
-      flushList()
-      blocks.push({ type: 'heading', text: line.slice(4).trim() })
-      continue
-    }
-
-    if (line.startsWith('- ')) {
-      currentList.push(line.slice(2).trim())
-      continue
-    }
-
-    flushList()
-    blocks.push({ type: 'paragraph', text: line })
-  }
-
-  flushList()
-  return blocks
-}
 
 export default App
