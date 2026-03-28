@@ -295,7 +295,7 @@ function App() {
               <p className="mb-3 text-xs font-medium tracking-[0.08em] text-[var(--muted)] md:hidden">
                 左右滑动查看卡片
               </p>
-              <div className="-mx-1 flex w-full snap-x snap-mandatory gap-3 overflow-x-auto overscroll-x-contain px-1 pb-2 pr-6 touch-pan-x [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:hidden">
+              <div className="-mx-1 flex w-full snap-x snap-mandatory gap-3 overflow-x-auto overscroll-x-contain px-1 pb-2 pr-6 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:hidden">
                 {heroCards.map((item) => (
                   <div key={item.title} className="w-[17.5rem] shrink-0 snap-start">
                     <HeroStatCard icon={item.icon} title={item.title} value={item.desc} />
@@ -332,7 +332,7 @@ function App() {
           <div className={sectionContentClass}>
             <div className="min-w-0 md:hidden">
               <p className="mb-3 text-xs font-medium tracking-[0.08em] text-[var(--muted)]">左右滑动查看作品</p>
-              <div className="-mx-1 flex snap-x snap-mandatory gap-4 overflow-x-auto overscroll-x-contain px-1 pb-2 pr-6 touch-pan-x [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden works-mobile-carousel-marker">
+              <div className="-mx-1 flex snap-x snap-mandatory gap-4 overflow-x-auto overscroll-x-contain px-1 pb-2 pr-6 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden works-mobile-carousel-marker">
                 {projects.map((project, index) => (
                   <article key={project.key} className={`${elevatedCardClass} works-mobile-static-marker flex w-[19.25rem] shrink-0 snap-start flex-col`}>
                     <ProjectCardContent project={project} index={index} onOpen={openProject} ctaLabel={t('works.viewDetail')} />
@@ -375,7 +375,7 @@ function App() {
             </div>
             <div className="min-w-0 px-5 py-5 md:hidden">
               <p className="mb-3 text-xs font-medium tracking-[0.08em] text-[var(--muted)]">左右滑动查看对比</p>
-              <div className="-mx-1 flex snap-x snap-mandatory gap-4 overflow-x-auto overscroll-x-contain px-1 pb-2 pr-6 touch-pan-x [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden compare-mobile-horizontal-marker">
+              <div className="-mx-1 flex snap-x snap-mandatory gap-4 overflow-x-auto overscroll-x-contain px-1 pb-2 pr-6 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden compare-mobile-horizontal-marker">
                 {comparisonRows.map((row, index) => (
                   <div key={row.dimension} className={`${elevatedCardClass} compare-mobile-static-card-marker flex w-[19.25rem] shrink-0 snap-start flex-col p-5`}>
                     <div className="mb-4 flex items-center justify-between gap-3">
