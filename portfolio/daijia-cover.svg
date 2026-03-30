@@ -1,0 +1,74 @@
+<svg width="1200" height="1600" viewBox="0 0 1200 1600" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="130" y1="110" x2="1090" y2="1490" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0C2FA7"/>
+      <stop offset="0.5" stop-color="#0B4FD2"/>
+      <stop offset="1" stop-color="#091B6E"/>
+    </linearGradient>
+    <linearGradient id="trailA" x1="90" y1="1230" x2="1110" y2="690" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#44D0FF" stop-opacity="0.0"/>
+      <stop offset="0.35" stop-color="#5CE7FF" stop-opacity="0.95"/>
+      <stop offset="0.7" stop-color="#A36CFF" stop-opacity="0.9"/>
+      <stop offset="1" stop-color="#FF78AE" stop-opacity="0.0"/>
+    </linearGradient>
+    <linearGradient id="phoneBlue" x1="290" y1="520" x2="930" y2="1260" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#1C64FF"/>
+      <stop offset="1" stop-color="#0B2E9B"/>
+    </linearGradient>
+    <filter id="glow" x="-100" y="-100" width="1400" height="1800" filterUnits="userSpaceOnUse">
+      <feGaussianBlur stdDeviation="24"/>
+    </filter>
+  </defs>
+
+  <rect width="1200" height="1600" fill="url(#bg)"/>
+  <circle cx="1020" cy="180" r="160" fill="#2FD5FF" fill-opacity="0.18" filter="url(#glow)"/>
+  <circle cx="240" cy="1460" r="220" fill="#6E8DFF" fill-opacity="0.2" filter="url(#glow)"/>
+
+  <text x="130" y="170" fill="#D8F5FF" font-size="86" font-family="Arial" font-weight="700">全城覆盖｜随叫随到</text>
+
+  <path d="M60 1170C260 1100 450 1130 700 980C900 860 1020 710 1160 640" stroke="url(#trailA)" stroke-width="20" stroke-linecap="round"/>
+  <path d="M0 1290C220 1180 420 1180 620 1040C820 900 980 780 1200 760" stroke="url(#trailA)" stroke-width="10" stroke-linecap="round" opacity="0.75"/>
+
+  <g transform="rotate(-18 390 1050)">
+    <rect x="150" y="760" width="520" height="760" rx="54" fill="#121316"/>
+    <rect x="178" y="790" width="464" height="702" rx="40" fill="url(#phoneBlue)"/>
+    <rect x="325" y="818" width="168" height="24" rx="12" fill="#0E1A5D" fill-opacity="0.8"/>
+    <rect x="228" y="960" width="360" height="250" rx="30" fill="#124CE0" stroke="#6FDBFF" stroke-opacity="0.4"/>
+    <path d="M258 1226C310 1130 390 1058 480 1002" stroke="#7AE7FF" stroke-width="10" stroke-linecap="round"/>
+    <path d="M540 1068L572 1104L624 1038" stroke="#A9F1FF" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+    <g fill="#FF9E39">
+      <path d="M322 1092C322 1060 352 1038 384 1038C416 1038 446 1060 446 1092C446 1138 384 1198 384 1198C384 1198 322 1138 322 1092Z"/>
+      <circle cx="384" cy="1090" r="20" fill="#FFD27D"/>
+    </g>
+    <g fill="#FF9E39" opacity="0.9">
+      <path d="M490 1160C490 1128 520 1106 552 1106C584 1106 614 1128 614 1160C614 1206 552 1266 552 1266C552 1266 490 1206 490 1160Z"/>
+      <circle cx="552" cy="1158" r="20" fill="#FFD27D"/>
+    </g>
+  </g>
+
+  <g transform="rotate(13 780 620)">
+    <rect x="600" y="360" width="420" height="640" rx="50" fill="#121316"/>
+    <rect x="624" y="386" width="372" height="592" rx="36" fill="url(#phoneBlue)"/>
+    <rect x="722" y="418" width="176" height="24" rx="12" fill="#0E1A5D" fill-opacity="0.8"/>
+    <text x="688" y="640" fill="#EAF8FF" font-size="56" font-family="Arial" font-weight="700">叫代驾</text>
+    <rect x="668" y="550" width="288" height="126" rx="63" fill="#48A9FF" fill-opacity="0.24" stroke="#9AEFFF" stroke-width="4"/>
+    <circle cx="812" cy="612" r="94" stroke="#8BEFFF" stroke-opacity="0.45" stroke-width="8"/>
+  </g>
+
+  <g transform="translate(720 780)">
+    <ellipse cx="170" cy="260" rx="200" ry="66" fill="#0E1A5D" fill-opacity="0.45"/>
+    <path d="M42 236C54 166 116 118 193 118H252C320 118 364 153 394 211L418 256H32L42 236Z" fill="#5FA0FF"/>
+    <rect x="70" y="158" width="112" height="72" rx="16" fill="#78B3FF"/>
+    <rect x="192" y="146" width="126" height="88" rx="18" fill="#78B3FF"/>
+    <circle cx="118" cy="262" r="34" fill="#E9EEF7"/>
+    <circle cx="316" cy="262" r="34" fill="#E9EEF7"/>
+    <circle cx="118" cy="262" r="17" fill="#A0A7B4"/>
+    <circle cx="316" cy="262" r="17" fill="#A0A7B4"/>
+  </g>
+
+  <g transform="translate(835 660)">
+    <circle cx="95" cy="54" r="46" fill="#FFB248"/>
+    <path d="M68 54H122" stroke="#FFE5A8" stroke-width="10" stroke-linecap="round"/>
+    <path d="M95 30V78" stroke="#FFE5A8" stroke-width="10" stroke-linecap="round"/>
+  </g>
+</svg>
