@@ -57,10 +57,12 @@ export default function ProjectDetailModal({
             <div className="min-h-0 overflow-y-auto">
               {project.images.length ? (
                 <div className="border-b border-[color:var(--line)] px-6 py-5 md:px-8">
-                  <div className="overflow-hidden rounded-[1.5rem] border border-[color:var(--line)] bg-[color:var(--surface)]">
-                    <img src={project.images[selectedImageIndex].src} alt={project.images[selectedImageIndex].alt} className="h-[260px] w-full object-cover md:h-[320px]" />
+                  <div className="overflow-hidden rounded-[1.5rem] border border-[color:var(--line-strong)] bg-[color:var(--surface)] shadow-[inset_0_1px_0_rgba(255,255,255,0.45)]">
+                    <div className="aspect-[16/9] overflow-hidden">
+                      <img src={project.images[selectedImageIndex].src} alt={project.images[selectedImageIndex].alt} className="h-full w-full object-cover" />
+                    </div>
                   </div>
-                  <div className="mt-4 flex gap-3 overflow-x-auto pb-1">
+                  <div className="mt-4 flex gap-3 overflow-x-auto pb-2 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
                     {project.images.map((image, index) => (
                       <button
                         key={image.src}

@@ -44,10 +44,19 @@ const navItems = [
 
 const projectKeys = ['v1', 'v2', 'daijia'] as const
 
-const projectMedia: Record<(typeof projectKeys)[number], string[]> = {
-  v1: ['portfolio/v1-1.svg', 'portfolio/v1-2.svg'],
-  v2: ['portfolio/v2-1.svg', 'portfolio/v2-2.svg'],
-  daijia: ['portfolio/daijia-1.svg', 'portfolio/daijia-2.svg'],
+const projectMedia: Record<
+  (typeof projectKeys)[number],
+  {
+    cover?: string
+    gallery: string[]
+  }
+> = {
+  v1: { gallery: ['portfolio/v1-1.svg', 'portfolio/v1-2.svg'] },
+  v2: { gallery: ['portfolio/v2-1.svg', 'portfolio/v2-2.svg'] },
+  daijia: {
+    cover: 'portfolio/daijia-cover.png',
+    gallery: ['portfolio/daijia-cover.png', 'portfolio/daijia-ui.png', 'portfolio/daijia-qr.jpg'],
+  },
 }
 
 const sectionShellClass =
@@ -147,7 +156,13 @@ function App() {
         summary: t(`projects.${key}.summary`),
         body: t(`projects.${key}.body`),
         detail: t(`projects.${key}.detail`),
-        images: (projectMedia[key] ?? []).map((path, index) => ({
+        coverImage: projectMedia[key]?.cover
+          ? {
+              src: `${import.meta.env.BASE_URL}${projectMedia[key].cover}`,
+              alt: `${t(`projects.${key}.title`)} cover`,
+            }
+          : undefined,
+        images: (projectMedia[key]?.gallery ?? []).map((path, index) => ({
           src: `${import.meta.env.BASE_URL}${path}`,
           alt: `${t(`projects.${key}.title`)} ${index + 1}`,
         })),
@@ -545,19 +560,13 @@ function App() {
                   <h3 className="mt-4 text-2xl font-semibold tracking-[-0.04em]">{t('hero.title')}</h3>
                   <p className="mt-4 text-sm leading-7 text-[var(--muted)] md:text-base md:leading-8">{t('contact.noteBody')}</p>
                 </div>
-                <div className="mt-6 flex flex-wrap gap-3 text-sm text-[var(--muted)]">
-                  <QuickChip icon={<Phone className="h-4 w-4" />} label="13172918902" />
-                  <QuickChip icon={<WeChatIcon className="h-4 w-4" />} label="zzzsrzsepsnd" />
-                  <QuickChip icon={<Mail className="h-4 w-4" />} label="1278511339@qq.com" />
-                </div>
               </ResponsiveMotionDiv>
 
               <div className="grid gap-4 md:grid-cols-2">
                 {[
                   { icon: <Phone className="h-5 w-5" />, label: t('contact.phone'), value: '13172918902' },
                   { icon: <WeChatIcon className="h-5 w-5" />, label: t('contact.wechat'), value: 'zzzsrzsepsnd' },
-                  { icon: <Mail className="h-5 w-5" />, label: t('contact.email'), value: '1278511339@qq.com', className: 'md:col-span-2' },
-                  { icon: <UserRound className="h-5 w-5" />, label: t('contact.name'), value: t('profile.name') },
+                  { icon: <Mail className="h-5 w-5" />, label: t('contact.email'), value: '1278511339@qq.com' },
                   { icon: <MapPin className="h-5 w-5" />, label: t('contact.location'), value: t('contact.locationValue') },
                 ].map((item, index) => (
                   <ResponsiveMotionDiv
@@ -568,7 +577,7 @@ function App() {
                     viewport={{ once: true, amount: 0.3 }}
                     transition={{ delay: index * 0.05, duration: 0.35 }}
                     whileHover={{ y: -4, scale: 1.01, transition: { duration: 0.16, ease: 'easeOut' } }}
-                    className={item.className ?? ''}
+                    className=""
                   >
                     <ContactCard icon={item.icon} label={item.label} value={item.value} />
                   </ResponsiveMotionDiv>
@@ -720,13 +729,15 @@ function ProjectCardContent({
   onOpen: (project: Project) => void
   ctaLabel: string
 }) {
-  const cover = project.images[0]
+  const cover = project.coverImage ?? project.images[0]
 
   return (
     <>
       {cover ? (
-        <div className="mb-5 overflow-hidden rounded-[1.2rem] border border-[color:var(--line)] bg-[color:var(--surface-strong)]">
-          <img src={cover.src} alt={cover.alt} className="h-44 w-full object-cover md:h-48" />
+        <div className="mb-5 overflow-hidden rounded-[1.25rem] border border-[color:var(--line-strong)] bg-[color:var(--surface)] shadow-[inset_0_1px_0_rgba(255,255,255,0.45)]">
+          <div className="aspect-[16/9] overflow-hidden">
+            <img src={cover.src} alt={cover.alt} className="h-full w-full object-cover" />
+          </div>
         </div>
       ) : null}
       <div className="mb-4 flex items-start justify-between gap-4">

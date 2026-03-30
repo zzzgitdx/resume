@@ -11,5 +11,6 @@ export type Project = {
   summary: string
   body: string
   detail: string
+  coverImage?: ProjectImage
   images: ProjectImage[]
 }
