@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from 'motion/react'
-import { X } from 'lucide-react'
+import { ChevronLeft, ChevronRight, X } from 'lucide-react'
 import ReactMarkdown from 'react-markdown'
 
 import type { Project } from '../portfolio-types'
@@ -9,6 +9,8 @@ type ProjectDetailModalProps = {
   project: Project | null
   selectedImageIndex: number
   onSelectImage: (index: number) => void
+  onShowPrevious: () => void
+  onShowNext: () => void
   onClose: () => void
 }
 
@@ -17,6 +19,8 @@ export default function ProjectDetailModal({
   project,
   selectedImageIndex,
   onSelectImage,
+  onShowPrevious,
+  onShowNext,
   onClose,
 }: ProjectDetailModalProps) {
   return (
@@ -57,10 +61,57 @@ export default function ProjectDetailModal({
             <div className="min-h-0 overflow-y-auto">
               {project.images.length ? (
                 <div className="border-b border-[color:var(--line)] px-6 py-5 md:px-8">
-                  <div className="overflow-hidden rounded-[1.5rem] border border-[color:var(--line-strong)] bg-[color:var(--surface)] shadow-[inset_0_1px_0_rgba(255,255,255,0.45)]">
-                    <div className="aspect-[16/9] overflow-hidden">
-                      <img src={project.images[selectedImageIndex].src} alt={project.images[selectedImageIndex].alt} className="h-full w-full object-cover" />
-                    </div>
+                  <div className="relative overflow-hidden rounded-[1.5rem] border border-[color:var(--line-strong)] bg-[color:var(--surface)] shadow-[inset_0_1px_0_rgba(255,255,255,0.45)]">
+                    {project.images.length > 1 ? (
+                      <>
+                        <button
+                          type="button"
+                          onClick={onShowPrevious}
+                          aria-label="gallery previous image"
+                          className="absolute left-3 top-1/2 z-10 inline-flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-white/20 bg-black/35 text-white transition hover:bg-black/55"
+                        >
+                          <ChevronLeft className="h-5 w-5" />
+                        </button>
+                        <button
+                          type="button"
+                          onClick={onShowNext}
+                          aria-label="gallery next image"
+                          className="absolute right-3 top-1/2 z-10 inline-flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-white/20 bg-black/35 text-white transition hover:bg-black/55"
+                        >
+                          <ChevronRight className="h-5 w-5" />
+                        </button>
+                      </>
+                    ) : null}
+
+                    <AnimatePresence initial={false} mode="wait">
+                      <motion.div
+                        key={project.images[selectedImageIndex].src}
+                        drag={project.images.length > 1 ? 'x' : false}
+                        dragConstraints={{ left: 0, right: 0 }}
+                        dragElastic={0.08}
+                        onDragEnd={(_, info) => {
+                          if (project.images.length < 2) return
+                          if (Math.abs(info.offset.x) < 72) return
+                          if (info.offset.x > 0) {
+                            onShowPrevious()
+                            return
+                          }
+                          onShowNext()
+                        }}
+                        initial={isMobile ? false : { opacity: 0.42, x: 18 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={isMobile ? undefined : { opacity: 0.42, x: -18 }}
+                        transition={{ duration: 0.18, ease: 'easeOut' }}
+                        className={`aspect-[16/9] overflow-hidden ${project.images.length > 1 ? 'cursor-grab active:cursor-grabbing' : ''}`}
+                      >
+                        <img
+                          src={project.images[selectedImageIndex].src}
+                          alt={project.images[selectedImageIndex].alt}
+                          draggable={false}
+                          className="h-full w-full object-cover"
+                        />
+                      </motion.div>
+                    </AnimatePresence>
                   </div>
                   <div className="mt-4 flex gap-3 overflow-x-auto pb-2 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
                     {project.images.map((image, index) => (

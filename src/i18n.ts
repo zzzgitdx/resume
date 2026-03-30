@@ -19,9 +19,9 @@ const resources = {
       hero: {
         eyebrow: 'Product Design Archive',
         title: '产品经理 / AI 协同设计',
-        subtitle: '聚焦复杂 B 端业务流程、状态机设计与规则治理，持续用 AI 提升方案输出、文档沉淀与联调效率。',
+        subtitle: '主要围绕客户留资、线索分配、客服跟进和结果闭环做产品设计与迭代，也参与本地服务平台的体验优化、数据整理和运营支持。',
         summary:
-          '这份页面不是按时间堆经历，而是按三段真实项目组织：速录 V1.0 负责验证扫码获客与咨询链路，V2.0 与 AI 一起从 0 到 1 拆解、讨论并开发落地更完整的业务系统，代驾平台则对应既有产品中的参与式迭代、体验优化与运营支持。',
+          '做过从 0 到 1 的业务验证型项目，也做过基于既有系统的结构升级和参与式迭代，重点放在把流程梳理清楚、让规则更可执行，以及把方案真正推进到可运行的产品里。',
         primary: '查看作品',
         secondary: '查看 V1 / V2 对比',
         tertiary: '查看代驾平台',
@@ -72,14 +72,14 @@ const resources = {
       ai: {
         kicker: 'AI Workflow',
         title: 'AI 协同工作方式',
-        intro: '这里强调的不是“会不会写提示词”，而是我在实际项目里长期并行使用的 3 类 AI：一起头脑风暴、整理文档归档，以及协助开发代码并把方案落地。',
+        intro: '我会把 AI 用在需求拆解、方案讨论、文档整理和开发落地里。重点不是“会不会写提示词”，而是能不能把它真正用进产品工作流。',
       },
       contact: {
         kicker: 'Contact',
         title: '联系方式',
-        intro: '当前以产品经理 / AI 协同设计方向为主，支持通过手机、微信或邮箱联系，适合沟通岗位机会、项目合作和案例交流。',
+        intro: '目前主要看产品经理相关机会，也欢迎沟通项目合作和案例交流。手机、微信和邮箱都可以直接联系。',
         noteTitle: '联系说明',
-        noteBody: '适合用于沟通产品岗位、案例交流与项目合作。当前作品页和 GitHub Pages 均可作为延伸阅读入口，方便进一步了解项目背景、职责边界和落地方式。',
+        noteBody: '如果你想进一步了解项目背景、职责边界和落地过程，也可以直接看这份作品页。',
         name: '姓名',
         phone: '手机',
         email: '邮箱',
@@ -116,10 +116,10 @@ const resources = {
       chauffeur: {
         kicker: 'Chauffeur Platform',
         title: '清远代驾平台',
-        intro: '这一段单独拿出来，是因为它和速录项目不同：不是从零主导完整系统，而是在既有业务中参与功能迭代、UI 优化、数据整理和运营支持。',
+        intro: '这是一个面向清远本地代驾场景的线上化平台，覆盖用户端、司机端和后台管理端。我在这个项目里主要参与部分功能迭代、页面优化、数据整理和运营支持。',
         storyTitle: '参与式产品迭代',
         storyBody:
-          '这个项目覆盖用户端、司机端和后台管理端，核心不是重做系统，而是在真实运营中持续补齐局部功能、体验和协同效率。我负责的工作更偏“在既有产品里把细节做稳”，包括部分功能设计、UI 调整、数据整理分析和部分运营物料支持。',
+          '这部分经历不是从 0 到 1 搭系统，而是在既有业务里持续补细节、做优化。我的工作更偏向功能迭代、UI 调整、数据整理分析和运营物料支持，核心是把已经上线的业务用得更顺、协作更稳。',
         bullets: [
           '覆盖用户端、司机端与后台管理端，场景明确、链路完整。',
           '参与司机管理、订单中心、调度中心等模块的部分功能迭代。',
@@ -135,8 +135,8 @@ const resources = {
             desc: '部分功能设计、页面 UI 调整、数据整理分析，以及部分运营物料设计与协同支持。',
           },
           {
-            title: '这段价值',
-            desc: '体现的是我在成熟业务中参与式迭代和跨产品、数据、运营协同推进的能力，而不只是一味强调从零搭建。',
+            title: '这段经历',
+            desc: '不是从零搭系统，而是在已有业务里持续补功能、调体验、做配合。',
           },
         ],
         cta: '查看代驾详情',
@@ -208,9 +208,9 @@ const resources = {
       hero: {
         eyebrow: 'Product Design Archive',
         title: 'Product Manager / AI Collaboration',
-        subtitle: 'Focused on complex B2B workflows, state models, and rule design, while using AI to improve output quality, documentation, and iteration speed.',
+        subtitle: 'I mainly work on lead capture, lead distribution, service workflows, and closed-loop operational products, while also contributing to UX refinement, data organization, and support work in local service platforms.',
         summary:
-          'This page is organized by three real product tracks rather than by timeline: Quick Capture V1.0 validated a QR-based acquisition funnel, V2.0 was decomposed, discussed, and shipped from 0 to 1 together with AI, and the chauffeur platform reflects iterative work inside an existing operational product.',
+          'My work spans early-stage validation projects, structural upgrades on existing systems, and iterative product support. The common thread is turning messy processes into clearer workflows, more executable rules, and products that can actually run.',
         primary: 'View Works',
         secondary: 'See V1 / V2 Comparison',
         tertiary: 'See Chauffeur Project',
@@ -261,14 +261,14 @@ const resources = {
       ai: {
         kicker: 'AI Workflow',
         title: 'How AI fits into my product workflow',
-        intro: 'This is not about prompt tricks. It reflects the three AI roles I actually keep in the workflow: one for brainstorming, one for documentation and archiving, and one for coding and delivery.',
+        intro: 'I use AI in requirement breakdown, solution discussion, documentation, and delivery. The point is not writing prompts, but making AI part of the actual product workflow.',
       },
       contact: {
         kicker: 'Contact',
         title: 'Contact Information',
-        intro: 'Currently open to product manager and AI-collaborative design roles. Phone, WeChat, and email are all available for job opportunities, project collaboration, and case discussion.',
+        intro: 'Currently open to product manager opportunities, and also happy to connect around collaboration or case discussion. Phone, WeChat, and email are all available.',
         noteTitle: 'How to reach out',
-        noteBody: 'Suitable for role discussion, project collaboration, and case exchange. The live portfolio page and GitHub Pages deployment can both be used as follow-up references when a deeper project discussion is needed.',
+        noteBody: 'If you want to see more about project background, scope, and delivery details, this portfolio page and GitHub deployment are both available as references.',
         name: 'Name',
         phone: 'Phone',
         email: 'Email',
@@ -305,10 +305,10 @@ const resources = {
       chauffeur: {
         kicker: 'Chauffeur Platform',
         title: 'Qingyuan Chauffeur Platform',
-        intro: 'This section is separated because it differs from the Quick Capture projects: it was not a full from-scratch rebuild, but iterative work inside an existing business covering feature refinement, UI polish, data organization, and operational support.',
+        intro: 'This is a local chauffeur platform for Qingyuan, covering the user app, driver app, and backend management. My role focused on selected feature iteration, UI refinement, data organization, and operational support.',
         storyTitle: 'Iterative contribution inside a running product',
         storyBody:
-          'The platform covers user, driver, and backend operation sides. My responsibility was not to redefine the whole system, but to make specific parts more stable through selected feature work, UI refinement, data organization, and operational material support.',
+          'This was not a 0-to-1 system build, but an iterative contribution inside an existing business. My work focused more on feature refinement, UI adjustments, data organization, and operational support to make the running product smoother and more stable.',
         bullets: [
           'The business scope spans user ordering, driver fulfillment, and backend management with a complete local chauffeur workflow.',
           'I contributed to selected modules such as driver management, order center, and dispatch center.',

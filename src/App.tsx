@@ -177,6 +177,16 @@ function App() {
     setSelectedProject(project)
   }
 
+  const showPreviousImage = () => {
+    if (!selectedProject?.images.length) return
+    setSelectedImageIndex((current) => (current - 1 + selectedProject.images.length) % selectedProject.images.length)
+  }
+
+  const showNextImage = () => {
+    if (!selectedProject?.images.length) return
+    setSelectedImageIndex((current) => (current + 1) % selectedProject.images.length)
+  }
+
   return (
     <div className="min-h-screen bg-[var(--bg)] text-[var(--text)] transition-colors duration-300 print:bg-white">
       <header className="sticky top-0 z-50 border-b border-[color:var(--line)] bg-[color:var(--surface-strong)] md:bg-[color:var(--surface)] print:hidden relative">
@@ -594,6 +604,8 @@ function App() {
           project={selectedProject}
           selectedImageIndex={selectedImageIndex}
           onSelectImage={setSelectedImageIndex}
+          onShowPrevious={showPreviousImage}
+          onShowNext={showNextImage}
           onClose={() => setSelectedProject(null)}
         />
       </Suspense>
